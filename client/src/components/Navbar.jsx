@@ -6,8 +6,8 @@ export default function Navbar() {
         }`;
 
     return (
-        <div className="sticky top-0 z-50 backdrop-blur-md bg-[#4E4E4E]/70 border-b border-white/20 shadow-[0_1px_10px_rgba(0,0,0,0.15)] relative overflow-hidden">
-            <div className="absolute top-0 inset-x-0 h-px bg-white/30" />
+        <div className="sticky top-0 z-50 backdrop-blur-sm bg-[#4E4E4E]/2 border-b border-white/20 shadow-[0_1px_10px_rgba(0,0,0,0.15)] relative overflow-hidden">
+            <div className="absolute top-0 inset-x-0 h-px bg-white/2" />
 
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/25 via-white/10 to-transparent" />
             <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">

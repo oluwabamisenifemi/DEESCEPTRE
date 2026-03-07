@@ -1,33 +1,50 @@
 require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
 
-const authRoutes = require("./routes/auth");
-const uploadRoutes = require("./routes/upload");
-const projectRoutes = require("./routes/projects");
-const testimonialRoutes = require("./routes/testimonials");
-const siteRoutes = require("./routes/site");
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
+/* =====================
+   MIDDLEWARE
+===================== */
 app.use(cors());
 app.use(express.json());
 
-// serve uploaded images
+/* =====================
+   STATIC FILES
+===================== */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.get("/api/health", (req, res) =>
-    res.json({ ok: true, message: "Backend is working ✅" })
-);
+/* =====================
+   SAFE REQUIRE (prints the real crash)
+===================== */
+function safeRequire(label, modulePath) {
+  try {
+    return require(modulePath);
+  } catch (err) {
+    console.error(`\n❌ Failed to load: ${label}`);
+    console.error(`   Path: ${modulePath}\n`);
+    console.error(err); // <-- this prints the real reason your server exits
+    process.exit(1);
+  }
+}
 
-app.use("/api/auth", authRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/testimonials", testimonialRoutes);
-app.use("/api/site", siteRoutes);
+/* =====================
+   ROUTES
+===================== */
+app.use("/api/auth", safeRequire("auth routes", "./routes/auth"));
+app.use("/api/upload", safeRequire("upload routes", "./routes/upload"));
+app.use("/api/site", safeRequire("site routes", "./routes/site"));
+app.use("/api/works", require("./routes/works"));
+app.use("/api/works", require("./routes/works"));
 
+/* =====================
+   START SERVER
+===================== */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-);
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});

@@ -1,91 +1,125 @@
 import { useEffect, useState } from "react";
+
+import ScrollWheelSection from "../components/ScrollWheelSection";
 import Navbar from "../components/Navbar";
+import FeaturedWorksSection from "../components/FeaturedWorksSection";
+
+
+const API_BASE = "http://localhost:5000";
 
 export default function Home() {
-    const [site, setSite] = useState(null);
+  const [site, setSite] = useState(null);
+const navPill =
+  "w-[80px] h-[25px] rounded-md bg-white/10 backdrop-blur-2xl" +
+  "shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_8px_24px_rgba(0,0,0,0.22)] " +
+  "text-black/80 text-xs font-extrabold font-[Montserrat] tracking-wide " +
+  "flex items-center justify-center text-center " +
+  "hover:bg-white/5 hover:border-white/15 transition";
 
-    useEffect(() => {
-        fetch("/api/site")
-            .then((r) => r.json())
-            .then((d) => setSite(d.site))
-            .catch(() => setSite(null));
-    }, []);
+  useEffect(() => {
+    fetch("/api/site")
+      .then((r) => r.json())
+      .then((d) => setSite(d.site))
+      .catch(() => setSite(null));
+  }, []);
 
-    const title = site?.heroTitle || "NEXUS APARTMENTS";
-    const image = site?.heroImageUrl;
+  const title = site?.heroTitle || "NEXUS APARTMENTS";
+  const image = site?.heroImageUrl ? `${API_BASE}${site.heroImageUrl}` : null;
 
+  return (
+    <div className="min-h-screen bg-[#4E4E4E] text-white">
+   
 
-    return (
-        <div className="min-h-screen bg-[#4E4E4E] text-white">
-            <Navbar />
+      {/* HERO: exactly one screen */}
+      <section className="relative h-screen w-full overflow-hidden bg-[#4E4E4E]">
+        {/* Background image ONLY inside hero */}
+{image && (
+  <div className="absolute inset-0 z-10 pointer-events-none">
+    <img
+      src={image}
+      alt="Hero background"
+      className="w-full h-full object-cover object-right"
+    />
 
-            <main className="max-w-7xl mx-auto px-6 pt-10 pb-8">
-                {<div className="absolute top-28 left-6 md:left-10 z-20">
-                    <div className="flex items-end gap-3">
-                        <h2 className="text-5xl md:text-6xl font-extrabold font-black font-[Montserrat] tracking-tight text-black">
-                            Dee Sceptre
-                        </h2>
+    {/* BOTTOM BLUR */}
+    <div className="absolute bottom-0 left-0 right-0 h-5
+      bg-gradient-to-t from-[#4E4E4E]/80 via-[#4E4E4E]/40 to-transparent
+      backdrop-blur-xl" />
+  </div>
+)}
 
-                        <h2 className="text-sm md:text-base font-extrabold font-[Montserrat] tracking-widest text-black/80 mb-1">
-                            LTD
-                        </h2>
-                    </div>
-                </div>}
+        {/* Content on top of image */}
+        <div className="relative z-30 mx-auto w-full max-w-[1440px] h-full">
+          {/* BRAND */}
+    <div className="absolute top-3 left-10 right-10 z-40 flex items-center justify-between">
+  
+  {/* LOGO */}
+  <div className="flex items-end gap-3">
+    <h2 className="text-6xl font-extrabold font-[Montserrat] tracking-tight text-black">
+      Dee Sceptre
+    </h2>
+    <span className="text-sm font-extrabold font-[Montserrat] tracking-widest text-black/80 mb-1">
+      LTD
+    </span>
+  </div>
 
+  {/* RIGHT-SIDE NAV BUTTONS */}
+  <div className="flex items-center gap-3">
+    <a href="#home" className={navPill}>HOME</a>
+    <a href="#projects" className={navPill}>PROJECTS</a>
+    <a href="#services" className={navPill}>SERVICES</a>
+    <a href="#reviews" className={navPill}>REVIEWS</a>
 
-                <div className="relative min-h-[85vh] overflow-visible">
-                    <h1 className="absolute top-48 left-1/2 -translate-x-[20%] z-20 whitespace-nowrap text-5xl font-black font-[Montserrat] tracking-tight text-black">{title}</h1>
+  </div>
 
-                    {image && (
-                        <div className="absolute inset-y-0 left-0 w-[85%] z-10 pointer-events-none">
-                            <img
-                                src={image}
-                                alt="Hero project"
-                                className="h-full w-full object-contain object-left opacity-95"
-                            />
-                            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#4E4E4E] to-transparent" />
-                        </div>
-                    )}
-                    <div className="absolute right-28 top-44 w-[260px] h-[260px] bg-white/10 blur-3xl rounded-full" />
+</div>
 
-                    {/* PILLS SECTION */}
-                    <section className="absolute left-0 right-0 bottom-10 z-30 flex justify-center gap-6 px-6">
+          {/* TITLE */}
+          <h1 className="absolute top-32 left-1/2 -translate-x-[30] text-5xl font-black font-[Montserrat] tracking-tight  text-black whitespace-nowrap">
+            {title}
+          </h1>
 
-                        {/* Pill 1 */}
-                        <div className="w-[395px] h-[64px] rounded-full bg-white/20 backdrop-blur-xl border border-white/20 shadow-[0_6px_18px_rgba(0,0,0,0.25)] px-6 flex flex-col justify-center">
-                            <p className="text-sm font-extrabold text-black leading-tight">
-                                Proven Track Record
-                            </p>
-                            <p className="text-[12px] text-black/80 leading-tight">
-                                On-time, on-budget delivery with a focus on professionalism.
-                            </p>
-                        </div>
+          {/* PILLS */}
+          <section className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-6">
+            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
+              <p className="text-sm font-extrabold text-black leading-tight">
+                Proven Track Record
+              </p>
+              <p className="text-[12px] text-black/60 leading-tight">
+                On-time, on-budget delivery with a focus on professionalism.
+              </p>
+            </div>
 
-                        {/* Pill 2 */}
-                        <div className="w-[395px] h-[64px] rounded-full bg-white/20 backdrop-blur-xl border border-white/20 shadow-[0_6px_18px_rgba(0,0,0,0.25)] px-6 flex flex-col justify-center">
-                            <p className="text-sm font-extrabold text-black leading-tight">
-                                Investor-Centric Approach
-                            </p>
-                            <p className="text-[12px] text-black/80 leading-tight">
-                                Attracting partnerships through transparent, high-yield opportunities.
-                            </p>
-                        </div>
+            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
+              <p className="text-sm font-extrabold text-black leading-tight">
+                Investor-Centric Approach
+              </p>
+              <p className="text-[12px] text-black/60 leading-tight">
+                Attracting partnerships through transparent, high-yield opportunities.
+              </p>
+            </div>
 
-                        {/* Pill 3 */}
-                        <div className="w-[395px] h-[64px] rounded-full bg-white/20 backdrop-blur-xl border border-white/20 shadow-[0_6px_18px_rgba(0,0,0,0.25)] px-6 flex flex-col justify-center">
-                            <p className="text-sm font-extrabold text-black leading-tight">
-                                Authority in the Space
-                            </p>
-                            <p className="text-[12px] text-black/80 leading-tight">
-                                Bridging gaps with contemporary housing that combines aesthetics, functionality, and resilience.
-                            </p>
-                        </div>
-
-                    </section>
-                </div>
-
-                <div className="h-40" />
-            </main>
+            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
+              <p className="text-sm font-extrabold text-black leading-tight">
+                Authority in the Space
+              </p>
+              <p className="text-[12px] text-black/60 leading-tight">
+                Bridging gaps with contemporary housing that combines aesthetics,
+                functionality, and resilience.
+              </p>
+            </div>
+          </section>
         </div>
-    );
+      </section>
+
+     
+<ScrollWheelSection />
+
+
+
+<FeaturedWorksSection />
+
+
+    </div>
+  );
 }

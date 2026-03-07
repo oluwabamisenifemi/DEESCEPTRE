@@ -1,34 +1,29 @@
-const router = require("express").Router();
-const { requireAuth } = require("../middleware/auth");
+const express = require("express");
+const { readSite, writeSite } = require("../library/siteStore");
+const auth = require("../middleware/auth");
 
-// TEMP in-memory storage (we'll persist later)
-let site = {
-    heroTitle: "NEXUS APARTMENTS",
-    heroImageUrl: "", // admin will set this later
-    pills: [
-        {
-            title: "Proven Track Record",
-            body: "On-time, on-budget delivery with a focus on professionalism.",
-        },
-        {
-            title: "Investor-Centric Approach",
-            body: "Attracting partnerships through transparent, high-yield opportunities.",
-        },
-        {
-            title: "Authority in the Space",
-            body: "Bridging gaps with contemporary housing that combines aesthetics, functionality, and resilience.",
-        },
-    ],
-};
+const router = express.Router();
 
+// Public: get site settings
 router.get("/", (req, res) => {
-    res.json({ ok: true, site });
+  const site = readSite();
+  res.json({ ok: true, site });
 });
 
-// for admin later
-router.put("/", requireAuth, (req, res) => {
-    site = { ...site, ...req.body };
-    res.json({ ok: true, site });
+// Protected: update site settings
+router.put("/", auth, (req, res) => {
+  const { heroTitle, heroImageUrl, sectionImageUrl } = req.body || {};
+
+  const patch = {};
+
+  if (typeof heroTitle === "string") patch.heroTitle = heroTitle;
+  if (typeof heroImageUrl === "string") patch.heroImageUrl = heroImageUrl;
+
+  // NEW: second section image (permanent, like hero image)
+  if (typeof sectionImageUrl === "string") patch.sectionImageUrl = sectionImageUrl;
+
+  const site = writeSite(patch);
+  res.json({ ok: true, site });
 });
 
 module.exports = router;

@@ -2,3 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.slide-panel {
+  transform: translateY(100%);
+  will-change: transform;
+}

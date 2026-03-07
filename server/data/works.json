@@ -1,0 +1,22 @@
+{
+  "works": [
+    {
+      "id": "1772874207650-6c9260be8801a",
+      "slug": "nexus-apartments",
+      "title": "Nexus Apartments",
+      "category": "Estate",
+      "location": "Lekki",
+      "overview": "Details\n\nClient:\n\nEleanor Murray\n\nCompleted:\n\nNov 2025\n\nLocation:\n\nLeeds,UK\n\nContributors:\n\nManor Torres, Clara Nguyen, Noah Lee",
+      "description": "Overview\n\nA full renovation of a traditional townhouse reimagined with clean geometry, refined proportions, and improved spatial flow. Natural light plays a central role, with carefully positioned openings enhancing each room’s character.\n\nWarm finishes, bespoke joinery, and thoughtful lighting bring elegance to everyday living, creating a cohesive home that feels modern yet firmly rooted in its historic neighbourhood.",
+      "coverImageUrl": "/uploads/1772874115815-1db292702c84f.png",
+      "gallery": [
+        "/uploads/1772873344811-ddf4621901a018.jpg",
+        "/uploads/1772873345209-0bc0292327ac9.png",
+        "/uploads/1772873345238-2e64ebf0a197a.png"
+      ],
+      "isFeatured": true,
+      "createdAt": 1772874207650,
+      "updatedAt": 1772874611108
+    }
+  ]
+}
