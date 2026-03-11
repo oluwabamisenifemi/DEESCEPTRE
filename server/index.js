@@ -17,6 +17,7 @@ app.use(express.json());
 ===================== */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+
 /* =====================
    SAFE REQUIRE (prints the real crash)
 ===================== */

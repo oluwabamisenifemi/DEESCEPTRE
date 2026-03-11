@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 
 import ScrollWheelSection from "../components/ScrollWheelSection";
 import Navbar from "../components/Navbar";
 import FeaturedWorksSection from "../components/FeaturedWorksSection";
 
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "http://localhost:5001";
 
 export default function Home() {
   const [site, setSite] = useState(null);
@@ -118,6 +119,9 @@ const navPill =
 
 
 <FeaturedWorksSection />
+
+
+<Footer />
 
 
     </div>

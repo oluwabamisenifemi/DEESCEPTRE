@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "http://localhost:5001";
 
 export default function SecretAdmin() {
   const [token, setToken] = useState(localStorage.getItem("admin_token") || "");
