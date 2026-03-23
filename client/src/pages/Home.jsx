@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
+import EnquiryForm from "../components/EnquiryForm";
 
 import ScrollWheelSection from "../components/ScrollWheelSection";
 import Navbar from "../components/Navbar";
+import ImageShowcaseSection from "../components/ImageShowcaseSection";
 import FeaturedWorksSection from "../components/FeaturedWorksSection";
+import StatsShowcaseSection from "../components/StatsShowcaseSection";
+import AmenitiesSection from "../components/AmenitiesSection";
+import ImpactSection from '../components/ImpactSection';
 
 
 const API_BASE = "http://localhost:5001";
@@ -34,6 +39,9 @@ const navPill =
       {/* HERO: exactly one screen */}
       <section className="relative h-screen w-full overflow-hidden bg-[#4E4E4E]">
         {/* Background image ONLY inside hero */}
+
+
+
 {image && (
   <div className="absolute inset-0 z-10 pointer-events-none">
     <img
@@ -51,27 +59,14 @@ const navPill =
 
         {/* Content on top of image */}
         <div className="relative z-30 mx-auto w-full max-w-[1440px] h-full">
+          <Navbar />
           {/* BRAND */}
     <div className="absolute top-3 left-10 right-10 z-40 flex items-center justify-between">
   
   {/* LOGO */}
-  <div className="flex items-end gap-3">
-    <h2 className="text-6xl font-extrabold font-[Montserrat] tracking-tight text-black">
-      Dee Sceptre
-    </h2>
-    <span className="text-sm font-extrabold font-[Montserrat] tracking-widest text-black/80 mb-1">
-      LTD
-    </span>
-  </div>
 
-  {/* RIGHT-SIDE NAV BUTTONS */}
-  <div className="flex items-center gap-3">
-    <a href="#home" className={navPill}>HOME</a>
-    <a href="#projects" className={navPill}>PROJECTS</a>
-    <a href="#services" className={navPill}>SERVICES</a>
-    <a href="#reviews" className={navPill}>REVIEWS</a>
 
-  </div>
+
 
 </div>
 
@@ -112,14 +107,17 @@ const navPill =
           </section>
         </div>
       </section>
+      <StatsShowcaseSection />
 
-     
+  <ImageShowcaseSection /> 
+  <AmenitiesSection />   
+  <ImpactSection /> 
 <ScrollWheelSection />
 
 
 
 <FeaturedWorksSection />
-
+<EnquiryForm />
 
 <Footer />
 

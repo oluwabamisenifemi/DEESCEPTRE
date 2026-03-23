@@ -1,0 +1,65 @@
+{
+  "properties": [
+    {
+      "id": "1774186209043-99d3aaaa325868",
+      "slug": "fdfdf",
+      "propertyText": "dsfwef",
+      "name": "fdfdf",
+      "location": "fdff",
+      "value": "dfdsf",
+      "description": "dfsdf",
+      "coverImageUrl": "/uploads/1774186196544-dc6b5594e9f45.jpg",
+      "gallery": [
+        "/uploads/1774186207659-5554840fa7e898.jpeg",
+        "/uploads/1774186207695-48c44f83f7b52.png",
+        "/uploads/1774186207704-e02af7fb746558.png",
+        "/uploads/1774186207770-2ce017081df678.jpg"
+      ],
+      "amenities": [
+        "dfsdf",
+        "dfwdfd",
+        "fsdfdf"
+      ],
+      "variables": [
+        {
+          "id": "306b68f4-7987-454a-8775-85924d9f0fd0",
+          "label": "Units",
+          "value": "dfdfdf"
+        }
+      ],
+      "createdAt": 1774186209043,
+      "updatedAt": 1774186209043
+    },
+    {
+      "id": "1774186154223-8eec0ca03ae99",
+      "slug": "house-3",
+      "propertyText": "nexus apartments",
+      "name": "house 3",
+      "location": "lekki",
+      "value": "1.3m",
+      "description": "fine house",
+      "coverImageUrl": "/uploads/1774186136022-da9b9fb1342fc8.png",
+      "gallery": [
+        "/uploads/1774186151019-5a1e1fbedc2758.jpeg",
+        "/uploads/1774186151051-0302d1070e22b8.png",
+        "/uploads/1774186151094-c69a773f0d2a1.jpg",
+        "/uploads/1774186151151-4602bf0734f78.png",
+        "/uploads/1774186151160-98f3a830d640a8.png"
+      ],
+      "amenities": [
+        "hhh",
+        "pool",
+        "light"
+      ],
+      "variables": [
+        {
+          "id": "529314c5-0f29-4501-a8a0-51552cc58ed8",
+          "label": "Units",
+          "value": "3"
+        }
+      ],
+      "createdAt": 1774186154223,
+      "updatedAt": 1774186154223
+    }
+  ]
+}

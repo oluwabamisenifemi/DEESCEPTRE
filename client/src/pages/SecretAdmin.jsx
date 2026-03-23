@@ -7,37 +7,58 @@ export default function SecretAdmin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // HERO image state (existing)
+  // HERO image state
   const [currentUrl, setCurrentUrl] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
 
-  // SECTION image state (existing)
+  // SECTION image state
   const [currentSectionUrl, setCurrentSectionUrl] = useState("");
   const [previewSectionUrl, setPreviewSectionUrl] = useState("");
 
-  // FEATURED WORKS (NEW)
+  // FEATURED WORKS
   const [works, setWorks] = useState([]);
   const [loadingWorks, setLoadingWorks] = useState(false);
   const [workOverview, setWorkOverview] = useState("");
   const [workDescription, setWorkDescription] = useState("");
-
   const [workTitle, setWorkTitle] = useState("");
   const [workCategory, setWorkCategory] = useState("");
   const [workLocation, setWorkLocation] = useState("");
   const [workFeatured, setWorkFeatured] = useState(true);
-
   const [coverPreview, setCoverPreview] = useState("");
-  const [coverUrl, setCoverUrl] = useState(""); // after upload
-
+  const [coverUrl, setCoverUrl] = useState("");
   const [galleryPreviews, setGalleryPreviews] = useState([]);
-  const [galleryUrls, setGalleryUrls] = useState([]); // after upload
+  const [galleryUrls, setGalleryUrls] = useState([]);
+  const [creatingWork, setCreatingWork] = useState(false);
+
+  // PROPERTIES
+  const [properties, setProperties] = useState([]);
+  const [loadingProperties, setLoadingProperties] = useState(false);
+  const [creatingProperty, setCreatingProperty] = useState(false);
+
+  const [propertyText, setPropertyText] = useState("");
+  const [propertyName, setPropertyName] = useState("");
+  const [propertyLocation, setPropertyLocation] = useState("");
+  const [propertyValue, setPropertyValue] = useState("");
+  const [propertyDescription, setPropertyDescription] = useState("");
+
+  const [propertyCoverPreview, setPropertyCoverPreview] = useState("");
+  const [propertyCoverUrl, setPropertyCoverUrl] = useState("");
+
+  const [propertyGalleryPreviews, setPropertyGalleryPreviews] = useState([]);
+  const [propertyGalleryUrls, setPropertyGalleryUrls] = useState([]);
+
+  const [amenityInput, setAmenityInput] = useState("");
+  const [propertyAmenities, setPropertyAmenities] = useState([]);
+
+  const [propertyVariables, setPropertyVariables] = useState([
+    { id: crypto.randomUUID(), label: "Units", value: "" },
+  ]);
 
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
   const [loggingIn, setLoggingIn] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [creatingWork, setCreatingWork] = useState(false);
 
   const loggedIn = !!token;
 
@@ -46,6 +67,8 @@ export default function SecretAdmin() {
   const subtleBorder = "border border-white/10";
   const input =
     "w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-white/20 focus:ring-2 focus:ring-white/10";
+  const textarea =
+    "w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-white/20 focus:ring-2 focus:ring-white/10 min-h-[120px] resize-y";
 
   const buttonPrimary =
     "rounded-xl bg-white text-zinc-900 font-semibold px-4 py-3 hover:bg-white/90 disabled:opacity-60 disabled:cursor-not-allowed transition";
@@ -76,7 +99,6 @@ export default function SecretAdmin() {
     return null;
   }, [error, status]);
 
-  // Load current site settings + works
   useEffect(() => {
     fetch("/api/site")
       .then((r) => r.json())
@@ -92,7 +114,7 @@ export default function SecretAdmin() {
 
   useEffect(() => {
     refreshWorks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    refreshProperties();
   }, []);
 
   async function refreshWorks() {
@@ -105,6 +127,19 @@ export default function SecretAdmin() {
       setWorks([]);
     } finally {
       setLoadingWorks(false);
+    }
+  }
+
+  async function refreshProperties() {
+    setLoadingProperties(true);
+    try {
+      const r = await fetch("/api/properties");
+      const d = await r.json().catch(() => ({}));
+      setProperties(Array.isArray(d?.properties) ? d.properties : []);
+    } catch {
+      setProperties([]);
+    } finally {
+      setLoadingProperties(false);
     }
   }
 
@@ -158,6 +193,10 @@ export default function SecretAdmin() {
     setCoverUrl("");
     setGalleryPreviews([]);
     setGalleryUrls([]);
+    setPropertyCoverPreview("");
+    setPropertyCoverUrl("");
+    setPropertyGalleryPreviews([]);
+    setPropertyGalleryUrls([]);
     setStatus("Logged out.");
     setError("");
   }
@@ -176,7 +215,7 @@ export default function SecretAdmin() {
     if (!up.ok || !upData.url) {
       throw new Error(upData?.error || `Upload failed (HTTP ${up.status}).`);
     }
-    return upData.url; // like "/uploads/....jpg"
+    return upData.url;
   }
 
   // HERO upload
@@ -288,7 +327,6 @@ export default function SecretAdmin() {
     if (!file) return;
     setError("");
     setStatus("");
-
     if (!token) return setError("Please login first.");
 
     const local = URL.createObjectURL(file);
@@ -314,17 +352,15 @@ export default function SecretAdmin() {
     }
   }
 
-  // FEATURED WORKS: pick gallery (multiple)
+  // FEATURED WORKS: gallery (multiple)
   async function onPickGallery(files) {
     const arr = Array.from(files || []);
     if (!arr.length) return;
 
     setError("");
     setStatus("");
-
     if (!token) return setError("Please login first.");
 
-    // previews
     const locals = arr.map((f) => URL.createObjectURL(f));
     setGalleryPreviews(locals);
 
@@ -334,7 +370,6 @@ export default function SecretAdmin() {
     try {
       const urls = [];
       for (const f of arr) {
-        // upload one by one (simple + reliable)
         // eslint-disable-next-line no-await-in-loop
         const u = await uploadSingleImage(f);
         urls.push(u);
@@ -415,7 +450,6 @@ export default function SecretAdmin() {
   async function toggleFeatured(work) {
     setError("");
     setStatus("");
-
     if (!token) return setError("Please login first.");
 
     try {
@@ -444,7 +478,6 @@ export default function SecretAdmin() {
   async function removeWork(work) {
     setError("");
     setStatus("");
-
     if (!token) return setError("Please login first.");
 
     try {
@@ -466,9 +499,209 @@ export default function SecretAdmin() {
     }
   }
 
+  // PROPERTIES helpers
+  function addAmenity() {
+    const value = amenityInput.trim();
+    if (!value) return;
+    setPropertyAmenities((prev) => [...prev, value]);
+    setAmenityInput("");
+  }
+
+  function removeAmenity(index) {
+    setPropertyAmenities((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function addVariable() {
+    setPropertyVariables((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), label: "", value: "" },
+    ]);
+  }
+
+  function updateVariable(id, key, val) {
+    setPropertyVariables((prev) =>
+      prev.map((v) => (v.id === id ? { ...v, [key]: val } : v))
+    );
+  }
+
+  function deleteVariable(id) {
+    setPropertyVariables((prev) =>
+      prev.length === 1
+        ? [{ id: crypto.randomUUID(), label: "", value: "" }]
+        : prev.filter((v) => v.id !== id)
+    );
+  }
+
+  function duplicateVariable(id) {
+    const item = propertyVariables.find((v) => v.id === id);
+    if (!item) return;
+
+    setPropertyVariables((prev) => [
+      ...prev,
+      { ...item, id: crypto.randomUUID() },
+    ]);
+  }
+
+  async function onPickPropertyCover(file) {
+    if (!file) return;
+    setError("");
+    setStatus("");
+    if (!token) return setError("Please login first.");
+
+    const local = URL.createObjectURL(file);
+    setPropertyCoverPreview(local);
+
+    setUploading(true);
+    setStatus("Uploading property cover...");
+
+    try {
+      const url = await uploadSingleImage(file);
+      setPropertyCoverUrl(url);
+      setStatus("Property cover uploaded ✅");
+    } catch (e) {
+      setPropertyCoverPreview("");
+      setPropertyCoverUrl("");
+      setStatus("");
+      setError(e?.message || "Property cover upload failed.");
+    } finally {
+      setUploading(false);
+      try {
+        URL.revokeObjectURL(local);
+      } catch {}
+    }
+  }
+
+  async function onPickPropertyGallery(files) {
+    const arr = Array.from(files || []);
+    if (!arr.length) return;
+
+    setError("");
+    setStatus("");
+    if (!token) return setError("Please login first.");
+
+    const locals = arr.map((f) => URL.createObjectURL(f));
+    setPropertyGalleryPreviews(locals);
+
+    setUploading(true);
+    setStatus("Uploading property gallery...");
+
+    try {
+      const urls = [];
+      for (const f of arr) {
+        // eslint-disable-next-line no-await-in-loop
+        const u = await uploadSingleImage(f);
+        urls.push(u);
+      }
+      setPropertyGalleryUrls(urls);
+      setStatus("Property gallery uploaded ✅");
+    } catch (e) {
+      setPropertyGalleryPreviews([]);
+      setPropertyGalleryUrls([]);
+      setStatus("");
+      setError(e?.message || "Property gallery upload failed.");
+    } finally {
+      setUploading(false);
+      try {
+        locals.forEach((u) => URL.revokeObjectURL(u));
+      } catch {}
+    }
+  }
+
+  async function createProperty() {
+    setError("");
+    setStatus("");
+
+    if (!token) return setError("Please login first.");
+    if (!propertyName.trim()) return setError("Property name is required.");
+    if (!propertyCoverUrl) return setError("Please upload a property cover image first.");
+
+    setCreatingProperty(true);
+    setStatus("Creating property...");
+
+    try {
+      const payload = {
+        propertyText: propertyText.trim(),
+        name: propertyName.trim(),
+        location: propertyLocation.trim(),
+        value: propertyValue.trim(),
+        description: propertyDescription.trim(),
+        coverImageUrl: propertyCoverUrl,
+        gallery: propertyGalleryUrls,
+        amenities: propertyAmenities,
+        variables: propertyVariables
+          .map((v) => ({
+            id: v.id,
+            label: String(v.label || "").trim(),
+            value: String(v.value || "").trim(),
+          }))
+          .filter((v) => v.label || v.value),
+      };
+
+      const r = await fetch("/api/properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        setStatus("");
+        setError(d?.error || `Create failed (HTTP ${r.status}).`);
+        return;
+      }
+
+      setStatus("Property created ✅");
+      setPropertyText("");
+      setPropertyName("");
+      setPropertyLocation("");
+      setPropertyValue("");
+      setPropertyDescription("");
+      setPropertyCoverPreview("");
+      setPropertyCoverUrl("");
+      setPropertyGalleryPreviews([]);
+      setPropertyGalleryUrls([]);
+      setAmenityInput("");
+      setPropertyAmenities([]);
+      setPropertyVariables([{ id: crypto.randomUUID(), label: "Units", value: "" }]);
+
+      await refreshProperties();
+    } catch {
+      setStatus("");
+      setError("Could not create property.");
+    } finally {
+      setCreatingProperty(false);
+    }
+  }
+
+  async function removeProperty(property) {
+    setError("");
+    setStatus("");
+    if (!token) return setError("Please login first.");
+
+    try {
+      const r = await fetch(`/api/properties/${property.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        setError(d?.error || `Delete failed (HTTP ${r.status}).`);
+        return;
+      }
+
+      setStatus("Property deleted ✅");
+      await refreshProperties();
+    } catch {
+      setError("Could not delete property.");
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      {/* Subtle background */}
       <div className="pointer-events-none fixed inset-0 opacity-60">
         <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-white/5 blur-3xl" />
         <div className="absolute top-24 right-0 h-[520px] w-[520px] rounded-full bg-white/5 blur-3xl" />
@@ -476,13 +709,12 @@ export default function SecretAdmin() {
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl px-6 py-10">
-        {/* Top bar */}
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-widest text-white/50">Admin</p>
             <h1 className="text-2xl font-semibold">Site Dashboard</h1>
             <p className="mt-1 text-white/60">
-              Upload and update the homepage hero background image.
+              Upload and update site assets, featured works, and property listings.
             </p>
           </div>
 
@@ -497,10 +729,8 @@ export default function SecretAdmin() {
           )}
         </div>
 
-        {/* Content */}
         {!loggedIn ? (
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {/* Login card */}
             <div className={`${card} p-6`}>
               <h2 className="text-lg font-semibold">Login</h2>
               <p className="mt-1 text-sm text-white/60">Enter your admin credentials to continue.</p>
@@ -537,7 +767,6 @@ export default function SecretAdmin() {
               </form>
             </div>
 
-            {/* Info card */}
             <div className={`${card} p-6`}>
               <h2 className="text-lg font-semibold">What you can change</h2>
               <ul className="mt-4 space-y-3 text-sm text-white/70">
@@ -551,7 +780,11 @@ export default function SecretAdmin() {
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-[6px] h-2 w-2 rounded-full bg-white/40" />
-                  Featured Works (add/delete/show on homepage)
+                  Featured Works
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-[6px] h-2 w-2 rounded-full bg-white/40" />
+                  Property Listings with dynamic variables
                 </li>
               </ul>
 
@@ -680,7 +913,7 @@ export default function SecretAdmin() {
               {badge}
             </div>
 
-            {/* FEATURED WORKS MANAGER (NEW) */}
+            {/* FEATURED WORKS MANAGER */}
             <div className={`${card} p-6`}>
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -695,7 +928,6 @@ export default function SecretAdmin() {
                 </button>
               </div>
 
-              {/* Create new work */}
               <div className="mt-6 grid gap-6 lg:grid-cols-2">
                 <div className={`rounded-2xl ${subtleBorder} bg-black/25 p-5`}>
                   <h3 className="font-semibold">Add new work</h3>
@@ -707,6 +939,7 @@ export default function SecretAdmin() {
                       value={workTitle}
                       onChange={(e) => setWorkTitle(e.target.value)}
                     />
+
                     <div className="grid grid-cols-2 gap-3">
                       <input
                         className={input}
@@ -720,22 +953,21 @@ export default function SecretAdmin() {
                         value={workLocation}
                         onChange={(e) => setWorkLocation(e.target.value)}
                       />
-                      <textarea
-                        className={`${input} min-h-[110px]`}
-                        placeholder="Overview (short summary)"
-                        value={workOverview}
-                        onChange={(e) => setWorkOverview(e.target.value)}
-                      />
-
-                      <textarea
-                        className={`${input} min-h-[160px]`}
-                        placeholder="Description (full project description)"
-                        value={workDescription}
-                        onChange={(e) => setWorkDescription(e.target.value)}
-                      />
-
-
                     </div>
+
+                    <textarea
+                      className={textarea}
+                      placeholder="Overview (short summary)"
+                      value={workOverview}
+                      onChange={(e) => setWorkOverview(e.target.value)}
+                    />
+
+                    <textarea
+                      className={textarea}
+                      placeholder="Description (full project description)"
+                      value={workDescription}
+                      onChange={(e) => setWorkDescription(e.target.value)}
+                    />
 
                     <label className="flex items-center gap-3 text-sm text-white/70">
                       <input
@@ -772,14 +1004,14 @@ export default function SecretAdmin() {
 
                     <div className="mt-4">
                       <p className="text-xs text-white/60 mb-2">Gallery images (optional, multiple)</p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      disabled={uploading}
-                      onChange={(e) => onPickGallery(e.target.files)}
-                      className={fileInput}
-                    />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={uploading}
+                        onChange={(e) => onPickGallery(e.target.files)}
+                        className={fileInput}
+                      />
 
                       {galleryPreviews.length ? (
                         <div className="mt-3 grid grid-cols-4 gap-2">
@@ -811,7 +1043,6 @@ export default function SecretAdmin() {
                   </div>
                 </div>
 
-                {/* Existing works list */}
                 <div className={`rounded-2xl ${subtleBorder} bg-black/25 p-5`}>
                   <h3 className="font-semibold">All works</h3>
                   <p className="mt-1 text-xs text-white/50">
@@ -853,6 +1084,266 @@ export default function SecretAdmin() {
 
                             <button
                               onClick={() => removeWork(w)}
+                              className="text-xs rounded-lg border border-red-400/20 bg-red-500/10 px-3 py-2 text-red-200 hover:bg-red-500/15 transition"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  {badge}
+                </div>
+              </div>
+            </div>
+
+            {/* PROPERTY LISTINGS MANAGER */}
+            <div className={`${card} p-6`}>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold">Property Listings</h2>
+                  <p className="mt-1 text-sm text-white/60">
+                    Create editable property listings with dynamic variables, amenities, cover image, and gallery.
+                  </p>
+                </div>
+                <button onClick={refreshProperties} className={buttonGhost}>
+                  Refresh
+                </button>
+              </div>
+
+              <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                <div className={`rounded-2xl ${subtleBorder} bg-black/25 p-5`}>
+                  <h3 className="font-semibold">Add new property</h3>
+
+                  <div className="mt-4 space-y-3">
+                    <input
+                      className={input}
+                      placeholder="Property text (e.g. Luxury Apartments)"
+                      value={propertyText}
+                      onChange={(e) => setPropertyText(e.target.value)}
+                    />
+
+                    <input
+                      className={input}
+                      placeholder="Property name (required)"
+                      value={propertyName}
+                      onChange={(e) => setPropertyName(e.target.value)}
+                    />
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        className={input}
+                        placeholder="Location"
+                        value={propertyLocation}
+                        onChange={(e) => setPropertyLocation(e.target.value)}
+                      />
+                      <input
+                        className={input}
+                        placeholder="Value"
+                        value={propertyValue}
+                        onChange={(e) => setPropertyValue(e.target.value)}
+                      />
+                    </div>
+
+                    <textarea
+                      className={textarea}
+                      placeholder="Description"
+                      value={propertyDescription}
+                      onChange={(e) => setPropertyDescription(e.target.value)}
+                    />
+
+                    <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                      <p className="text-sm font-medium text-white/80">Amenities</p>
+
+                      <div className="mt-3 flex gap-2">
+                        <input
+                          className={input}
+                          placeholder="Add amenity"
+                          value={amenityInput}
+                          onChange={(e) => setAmenityInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              addAmenity();
+                            }
+                          }}
+                        />
+                        <button type="button" onClick={addAmenity} className={buttonGhost}>
+                          Add
+                        </button>
+                      </div>
+
+                      {propertyAmenities.length ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {propertyAmenities.map((item, i) => (
+                            <button
+                              key={`${item}-${i}`}
+                              type="button"
+                              onClick={() => removeAmenity(i)}
+                              className="rounded-full border border-white/15 bg-white/[0.03] px-3 py-1 text-xs text-white/80 hover:bg-white/[0.06]"
+                              title="Click to remove"
+                            >
+                              {item} ×
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-white/80">Dynamic Variables</p>
+                        <button type="button" onClick={addVariable} className={buttonGhost}>
+                          + Add Variable
+                        </button>
+                      </div>
+
+                      <div className="mt-3 space-y-3">
+                        {propertyVariables.map((v) => (
+                          <div key={v.id} className="grid grid-cols-[1fr_1fr_auto_auto] gap-2">
+                            <input
+                              className={input}
+                              placeholder="Variable name"
+                              value={v.label}
+                              onChange={(e) => updateVariable(v.id, "label", e.target.value)}
+                            />
+                            <input
+                              className={input}
+                              placeholder="Variable value"
+                              value={v.value}
+                              onChange={(e) => updateVariable(v.id, "value", e.target.value)}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => duplicateVariable(v.id)}
+                              className={buttonGhost}
+                              title="Duplicate"
+                            >
+                              +
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => deleteVariable(v.id)}
+                              className={buttonGhost}
+                              title="Delete"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="text-xs text-white/60 mb-2">Property cover image (required)</p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploading}
+                        onChange={(e) => onPickPropertyCover(e.target.files?.[0])}
+                        className={fileInput}
+                      />
+                      <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                        {propertyCoverPreview ? (
+                          <img
+                            src={propertyCoverPreview}
+                            alt="Property cover preview"
+                            className="h-44 w-full object-cover"
+                          />
+                        ) : propertyCoverUrl ? (
+                          <div className="h-44 grid place-items-center text-xs text-white/60">
+                            Property cover uploaded ✅
+                          </div>
+                        ) : (
+                          <div className="h-44 grid place-items-center text-xs text-white/50">
+                            No cover selected
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="text-xs text-white/60 mb-2">Property gallery images (optional, multiple)</p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={uploading}
+                        onChange={(e) => onPickPropertyGallery(e.target.files)}
+                        className={fileInput}
+                      />
+
+                      {propertyGalleryPreviews.length ? (
+                        <div className="mt-3 grid grid-cols-4 gap-2">
+                          {propertyGalleryPreviews.slice(0, 8).map((src) => (
+                            <img
+                              key={src}
+                              src={src}
+                              alt="property preview"
+                              className="h-16 w-full object-cover rounded-lg border border-white/10"
+                            />
+                          ))}
+                        </div>
+                      ) : propertyGalleryUrls.length ? (
+                        <div className="mt-3 text-xs text-white/60">
+                          Property gallery uploaded ✅ ({propertyGalleryUrls.length} images)
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <button
+                      disabled={creatingProperty || uploading}
+                      onClick={createProperty}
+                      className={`${buttonPrimary} w-full`}
+                    >
+                      {creatingProperty ? "Creating..." : "Create property"}
+                    </button>
+
+                    {badge}
+                  </div>
+                </div>
+
+                <div className={`rounded-2xl ${subtleBorder} bg-black/25 p-5`}>
+                  <h3 className="font-semibold">All properties</h3>
+                  <p className="mt-1 text-xs text-white/50">
+                    These are your saved property listings.
+                  </p>
+
+                  <div className="mt-4 space-y-3 max-h-[620px] overflow-auto pr-1">
+                    {loadingProperties ? (
+                      <div className="text-sm text-white/60">Loading…</div>
+                    ) : properties.length === 0 ? (
+                      <div className="text-sm text-white/50">No properties yet.</div>
+                    ) : (
+                      properties.map((p) => {
+                        const cover = p.coverImageUrl ? `${API_BASE}${p.coverImageUrl}` : "";
+                        return (
+                          <div
+                            key={p.id}
+                            className="rounded-xl border border-white/10 bg-black/20 p-3 flex items-center gap-3"
+                          >
+                            <div className="h-14 w-14 overflow-hidden rounded-lg border border-white/10 bg-black/30">
+                              {cover ? (
+                                <img src={cover} alt={p.name} className="h-full w-full object-cover" />
+                              ) : null}
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <div className="font-semibold text-sm truncate">{p.name}</div>
+                              <div className="text-xs text-white/50 truncate">
+                                {p.location || "—"} • {p.value || "—"}
+                              </div>
+                              {Array.isArray(p.variables) && p.variables.length ? (
+                                <div className="mt-1 text-[11px] text-white/40 truncate">
+                                  {p.variables.map((v) => `${v.label}: ${v.value}`).join(" • ")}
+                                </div>
+                              ) : null}
+                            </div>
+
+                            <button
+                              onClick={() => removeProperty(p)}
                               className="text-xs rounded-lg border border-red-400/20 bg-red-500/10 px-3 py-2 text-red-200 hover:bg-red-500/15 transition"
                             >
                               Delete

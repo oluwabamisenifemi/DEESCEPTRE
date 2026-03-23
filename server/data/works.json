@@ -1,6 +1,38 @@
 {
   "works": [
     {
+      "id": "1773485241505-fda679c438ba18",
+      "slug": "ytete",
+      "title": "ytete",
+      "category": "euidjdn",
+      "location": "jcjcj",
+      "overview": "cjidjdj",
+      "description": "idjdjh",
+      "coverImageUrl": "/uploads/1773485226570-75dc0dd36ea95.jpeg",
+      "gallery": [
+        "/uploads/1773485236428-bc2135352ce35.jpg",
+        "/uploads/1773485236475-fc3ed26b871cb8.jpg",
+        "/uploads/1773485236483-e384f947367c5.jpg"
+      ],
+      "isFeatured": true,
+      "createdAt": 1773485241505,
+      "updatedAt": 1773485241505
+    },
+    {
+      "id": "1773440635509-cf004d514e446",
+      "slug": "another-wan",
+      "title": "another wan",
+      "category": "idk",
+      "location": "idk",
+      "overview": "idk",
+      "description": "idk",
+      "coverImageUrl": "/uploads/1773440632330-98ee3f097c1e7.webp",
+      "gallery": [],
+      "isFeatured": true,
+      "createdAt": 1773440635509,
+      "updatedAt": 1773485244891
+    },
+    {
       "id": "1772874207650-6c9260be8801a",
       "slug": "nexus-apartments",
       "title": "Nexus Apartments",
