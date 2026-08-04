@@ -16,9 +16,7 @@ export default function Footer() {
             ✦ <span>Message</span>
           </div>
 
-          <p className="mt-4 text-white/60 leading-relaxed">
-            Track every move, analyze your performance, and get real-time coaching.
-          </p>
+        
 
           {/* SOCIAL ICONS */}
           <div className="flex gap-5 mt-6 text-[20px] text-white/80">
@@ -30,9 +28,8 @@ export default function Footer() {
           {/* CREDIT */}
           <div className="mt-12 text-white/50 text-sm flex items-center gap-2">
             <span>Created by</span>
-            <span className="text-white">Arthur</span>
-            <span>in</span>
-            <span className="text-white">Framer</span>
+            <span className="text-white">Oluwabamise Oluwanifemi</span>
+            
           </div>
 
         </div>

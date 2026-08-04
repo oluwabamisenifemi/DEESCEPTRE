@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function EnquiryForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function EnquiryForm() {
     socialMediaHandle: "",
   });
 
-  const BUSINESS_WHATSAPP = "2348012345678";
+  const BUSINESS_WHATSAPP = "2348070951487";
   // Replace with the business owner's WhatsApp number
   // Use country code, no +, no spaces, no dashes
 
@@ -28,35 +29,43 @@ export default function EnquiryForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
+
+
+  
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+
+    await axios.post(
+      "http://localhost:5001/api/enquiry",
+      form
+    );
+
+    // WHATSAPP MESSAGE
     const message = `
-Hello, I would like to make an enquiry.
+New Website Enquiry
 
 Name: ${form.name}
 Email: ${form.email}
-Phone Number: ${form.phone}
-Social Media Account: ${form.socialMediaAccount}
-Social Media Handle: ${form.socialMediaHandle}
-    `.trim();
+Phone: ${form.phone}
+Social Media: ${form.socialMedia}
+Handle: ${form.handle}
+    `;
 
-    const whatsappUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(
-      message
-    )}`;
+    const whatsappUrl =
+      `https://wa.me/2348123456789?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
 
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      socialMediaAccount: "",
-      socialMediaHandle: "",
-    });
+    alert("Enquiry sent successfully!");
 
-    setIsOpen(false);
-  };
+  } catch (error) {
+    console.log(error);
+    alert("Failed to send enquiry");
+  }
+};
 
   return (
     <section className="w-full bg-black px-6 py-16 text-white md:px-10">

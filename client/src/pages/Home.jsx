@@ -37,76 +37,109 @@ const navPill =
    
 
       {/* HERO: exactly one screen */}
-      <section className="relative h-screen w-full overflow-hidden bg-[#4E4E4E]">
-        {/* Background image ONLY inside hero */}
+<section className="relative h-screen w-full overflow-hidden bg-[#4E4E4E]">
 
+  {/* BACKGROUND IMAGE */}
+  {image && (
+    <div className="absolute inset-0 z-10 pointer-events-none">
+      <img
+        src={image}
+        alt="Hero background"
+        className="w-full h-full object-cover object-center"
+      />
 
+      {/* LEFT GRADIENT */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
 
-{image && (
-  <div className="absolute inset-0 z-10 pointer-events-none">
-    <img
-      src={image}
-      alt="Hero background"
-      className="w-full h-full object-cover object-right"
-    />
+      {/* BOTTOM BLUR */}
+      <div className="absolute bottom-0 left-0 right-0 h-6
+        bg-gradient-to-t from-[#4E4E4E]/80 via-[#4E4E4E]/40 to-transparent
+        backdrop-blur-xl"
+      />
+    </div>
+  )}
 
-    {/* BOTTOM BLUR */}
-    <div className="absolute bottom-0 left-0 right-0 h-5
-      bg-gradient-to-t from-[#4E4E4E]/80 via-[#4E4E4E]/40 to-transparent
-      backdrop-blur-xl" />
-  </div>
-)}
+  {/* CONTENT */}
+  <div className="relative z-30 mx-auto w-full max-w-[1440px] h-full px-10">
 
-        {/* Content on top of image */}
-        <div className="relative z-30 mx-auto w-full max-w-[1440px] h-full">
-          <Navbar />
-          {/* BRAND */}
-    <div className="absolute top-3 left-10 right-10 z-40 flex items-center justify-between">
-  
-  {/* LOGO */}
+    <Navbar />
 
+    <div className="flex h-full items-center">
 
+      {/* LEFT CONTENT */}
+      <div className="max-w-xl">
 
+        <h1 className="text-5xl md:text-6xl font-semibold text-white leading-tight">
+          Building Value.
+          <br />
+          Creating Legacy.
+        </h1>
 
-</div>
+        {/* 🔥 MOVED NEXUS HERE */}
+        <h2 className="mt-4 text-2xl italic font-light text-white/60 tracking-wide">
+          {title}
+        </h2>
 
-          {/* TITLE */}
-          <h1 className="absolute top-32 left-1/2 -translate-x-[30] text-5xl font-black font-[Montserrat] tracking-tight  text-black whitespace-nowrap">
-            {title}
-          </h1>
+        <p className="mt-6 text-lg text-white/70">
+          Premium real estate development and construction solutions in Nigeria.
+        </p>
 
-          {/* PILLS */}
-          <section className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-6">
-            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
-              <p className="text-sm font-extrabold text-black leading-tight">
-                Proven Track Record
-              </p>
-              <p className="text-[12px] text-black/60 leading-tight">
-                On-time, on-budget delivery with a focus on professionalism.
-              </p>
-            </div>
+        {/* CTA */}
+        <div className="mt-8 flex items-center gap-6">
 
-            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
-              <p className="text-sm font-extrabold text-black leading-tight">
-                Investor-Centric Approach
-              </p>
-              <p className="text-[12px] text-black/60 leading-tight">
-                Attracting partnerships through transparent, high-yield opportunities.
-              </p>
-            </div>
+          <a
+            href="/contact"
+            className="flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-sm font-semibold hover:opacity-90 transition"
+          >
+            Get Started →
+          </a>
 
-            <div className="w-[395px] h-[64px] rounded-full bg-white/3 backdrop-blur-lg border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_8px_24px_rgba(0,0,0,0.35)] px-6 flex flex-col justify-center">
-              <p className="text-sm font-extrabold text-black leading-tight">
-                Authority in the Space
-              </p>
-              <p className="text-[12px] text-black/60 leading-tight">
-                Bridging gaps with contemporary housing that combines aesthetics,
-                functionality, and resilience.
-              </p>
-            </div>
-          </section>
+          <a
+            href="/projects"
+            className="flex items-center gap-2 text-white text-sm font-medium hover:underline"
+          >
+            Explore Projects →
+          </a>
+
         </div>
-      </section>
+      </div>
+
+    </div>
+
+    {/* PILLS */}
+    <section className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-6">
+
+      <div className="w-[320px] h-[70px] rounded-full bg-white/10 backdrop-blur-xl border border-white/20 px-6 flex flex-col justify-center shadow-lg">
+        <p className="text-sm font-semibold text-white">
+          Proven Track Record
+        </p>
+        <p className="text-xs text-white/70">
+          On-time, on-budget delivery with professionalism.
+        </p>
+      </div>
+
+      <div className="w-[320px] h-[70px] rounded-full bg-white/10 backdrop-blur-xl border border-white/20 px-6 flex flex-col justify-center shadow-lg">
+        <p className="text-sm font-semibold text-white">
+          Investor-Centric Approach
+        </p>
+        <p className="text-xs text-white/70">
+          Transparent, high-yield opportunities.
+        </p>
+      </div>
+
+      <div className="w-[320px] h-[70px] rounded-full bg-white/10 backdrop-blur-xl border border-white/20 px-6 flex flex-col justify-center shadow-lg">
+        <p className="text-sm font-semibold text-white">
+          Authority in the Space
+        </p>
+        <p className="text-xs text-white/70">
+          Modern housing with performance and resilience.
+        </p>
+      </div>
+
+    </section>
+
+  </div>
+</section>
       <StatsShowcaseSection />
 
   <ImageShowcaseSection /> 

@@ -1,17 +1,20 @@
 require("dotenv").config();
 
+
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const articlesRoutes = require("./routes/articles");
 
 const app = express();
+const enquiryRoute = require("./routes/enquiry");
 
 /* =====================
    MIDDLEWARE
 ===================== */
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/enquiry", enquiryRoute);
 /* =====================
    STATIC FILES
 ===================== */
@@ -39,6 +42,8 @@ app.use("/api/upload", safeRequire("upload routes", "./routes/upload"));
 app.use("/api/site", safeRequire("site routes", "./routes/site"));
 app.use("/api/works", safeRequire("works routes", "./routes/works"));
 app.use("/api/properties", safeRequire("properties routes", "./routes/properties"));
+app.use("/uploads", express.static("uploads"));
+app.use("/api/articles", articlesRoutes);
 
 /* =====================
    START SERVER

@@ -259,62 +259,7 @@ const slideY = (1 - slideP) * 100; // 100% (hidden below) -> 0% (fully covering)
     }
   `}</style>
 
-  <div className="absolute inset-0 bg-[#F6EEDD] overflow-hidden">
-    {/* CONTENT COLUMN */}
-    <div className="mx-auto flex w-full  px-10 text-center">
-      <div className=" mt-[20px] w-[800px] mr-[50px] overflow-hidden">
-  {sectionImage && (
-    <img
-      src={sectionImage}
-      alt="Section"
-      className="w-full h-full object-cover"
-    />
-  )}
-</div>
 
-      <div className=" mr-0  mt-[20px]  ">
-      {/* HEADLINE (matches screenshot) */}
-      <h2 className="mt-[60px] font-[Montserrat] font-medium tracking-[-0.02em] leading-[1.15] text-[40px] text-black">
-        DeeScepterLimited: Where Structural
-        <br />
-        Integrity Meets Urban Innovation.
-      </h2>
-
-      {/* PARAGRAPH (narrow block) */}
-      <p className="mt-[46px] mx-auto max-w-[660px] font-[Montserrat] text-[16px] leading-[1.9] text-[#7C7C7C]">
-        DeeScepterLimited: Where Structural Integrity Meets Urban Innovation.DeeScepterLimited: Where Structural Integrity Meets Urban Innovation.DeeScepterLimited: Where Structural Integrity Meets Urban Innovation.DeeScepterLimited: Where Structural Integrity Meets Urban
-      </p>
-
-      {/* STATS */}
-      <div className="mt-[56px] flex justify-center gap-[92px]">
-        <div className="text-center">
-          <div className="goldTexture font-[Montserrat] font-extrabold leading-none text-[84px]">8K+</div>
-          <div className="mt-[10px] font-[Montserrat] font-semibold text-[18px] text-[#7C7C7C]">Houses Sold</div>
-        </div>
-
-        <div className="text-center">
-          <div className="goldTexture font-[Montserrat] font-extrabold leading-none text-[84px]">6K+</div>
-          <div className="mt-[10px] font-[Montserrat] font-semibold text-[18px] text-[#7C7C7C]">Houses Sold</div>
-        </div>
-
-        <div className="text-center">
-          <div className="goldTexture font-[Montserrat] font-extrabold leading-none text-[84px]">2K+</div>
-          <div className="mt-[10px] font-[Montserrat] font-semibold text-[18px] text-[#7C7C7C]">Houses Sold</div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    {/* DIVIDER LINE */}
-    <div className="absolute left-0 right-0 bottom-[168px] h-px bg-black/10" />
-
-    {/* WATERMARK (huge, italic, clipped) */}
-    <div className="absolute bottom-10 left-0 right-0 text-center pointer-events-none select-none">
-      <span className="font-[Montserrat] italic font-semibold text-[150px] mt-0 leading-none text-black/15">
-        Dee Sceptre
-      </span>
-    </div>
-  </div>
 
 
 

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import LatestNewsSection from "../components/LatestNewsSection";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -81,10 +82,12 @@ function Card({ children, className = "" }) {
 }
 
 export default function DeeScepter() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:px-8">
           <div>
             <p className="text-sm font-semibold tracking-[0.24em] text-white">
               DEE SCEPTER
@@ -93,6 +96,20 @@ export default function DeeScepter() {
               Engineering-Led Real Estate Development
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10 md:hidden"
+            aria-expanded={menuOpen}
+            aria-label="Toggle navigation"
+          >
+            <span className="flex h-5 w-5 flex-col justify-between">
+              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "translate-y-[5px] rotate-45" : ""}`} />
+              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "-translate-y-[5px] -rotate-45" : ""}`} />
+            </span>
+          </button>
 
           <nav className="hidden items-center gap-8 text-sm text-zinc-400 md:flex">
             <a href="#overview" className="transition hover:text-white">
@@ -117,12 +134,33 @@ export default function DeeScepter() {
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
+
+        {menuOpen && (
+          <div className="md:hidden border-t border-white/10 bg-black/80">
+            <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
+              <nav className="flex flex-col gap-3 text-sm text-zinc-300">
+                <a href="#overview" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                  Overview
+                </a>
+                <a href="#competencies" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                  Competencies
+                </a>
+                <a href="#projects" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                  Projects
+                </a>
+                <a href="#partners" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                  Partnerships
+                </a>
+              </nav>
+            </div>
+          </div>
+        )}
       </header>
 
       <main>
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_30%)]" />
-          <div className="mx-auto grid min-h-[90vh] max-w-7xl items-end gap-14 px-6 pb-14 pt-20 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-20 lg:pt-24">
+          <div className="mx-auto grid min-h-[80vh] max-w-7xl items-end gap-10 px-4 pb-12 pt-16 sm:px-6 sm:pb-14 sm:pt-18 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-20 lg:pt-24">
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
@@ -133,7 +171,7 @@ export default function DeeScepter() {
                 Lagos • Design to Construction Framework
               </p>
 
-              <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.05em] text-white md:text-7xl lg:text-[6rem]">
+              <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl md:text-7xl lg:text-[6rem]">
                 Dee Scepter Limited
                 <span className="mt-3 block text-zinc-400">
                   Engineering-Led Real Estate Development
@@ -204,7 +242,7 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="overview" className="mx-auto max-w-7xl px-6 py-24 md:px-8">
+        <section id="overview" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
           <SectionHeading
             eyebrow="Company Overview"
             title="Structured residential development anchored by engineering discipline"
@@ -311,7 +349,7 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="projects" className="mx-auto max-w-7xl px-6 py-24 md:px-8">
+        <section id="projects" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
           <SectionHeading
             eyebrow="Track Record"
             title="Residential projects delivered through structured execution"
@@ -350,7 +388,7 @@ export default function DeeScepter() {
         </section>
 
         <section className="border-y border-white/8 bg-white/[0.02] py-24">
-          <div className="mx-auto max-w-7xl px-6 md:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 md:px-8">
             <SectionHeading
               eyebrow="Strategic Advantage"
               title="Executive-level engineering oversight shapes every phase"
@@ -385,7 +423,7 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="partners" className="mx-auto max-w-7xl px-6 py-24 md:px-8">
+        <section id="partners" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
           <SectionHeading
             eyebrow="Partnership Model"
             title="Built for landowners, investors, and strategic development stakeholders"
@@ -443,6 +481,8 @@ export default function DeeScepter() {
             </Card>
           </div>
         </section>
+
+<LatestNewsSection />
       </main>
 
       <footer className="border-t border-white/10 bg-black/80">
