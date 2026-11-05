@@ -44,6 +44,9 @@ app.use("/api/works", safeRequire("works routes", "./routes/works"));
 app.use("/api/properties", safeRequire("properties routes", "./routes/properties"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/articles", articlesRoutes);
+app.use("/api/subscribers", safeRequire("subscriber routes", "./routes/subscribers"));
+app.use("/api/meetings", safeRequire("meeting routes", "./routes/meetings"));
+app.use("/api/dseii", safeRequire("dseii routes", "./routes/dseii"));
 
 /* =====================
    START SERVER

@@ -5,7 +5,7 @@ export default function LatestNewsSection() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/articles/published")
+    fetch("/api/articles/published")
       .then((res) => res.json())
       .then((data) => setArticles(data.slice(0, 4)))
       .catch((err) => console.log(err));
@@ -47,7 +47,7 @@ export default function LatestNewsSection() {
             <div className="h-[360px] overflow-hidden bg-[#111]">
               {latest.coverImage ? (
                 <img
-                  src={`http://localhost:5001${latest.coverImage}`}
+                  src={`${latest.coverImage}`}
                   alt={latest.title}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />

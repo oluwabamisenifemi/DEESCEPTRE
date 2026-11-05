@@ -1,8 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-export default function EnquiryForm() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function EnquiryForm({ defaultOpen = false }) {
+  const { hash } = useLocation();
+
+  // Start open on the Contact page, or when the link ends in #enquiry
+  const [isOpen, setIsOpen] = useState(defaultOpen || hash === "#enquiry");
+
+  useEffect(() => {
+    if (hash !== "#enquiry") return;
+
+    // Scroll to the enquiry section
+    const timer = setTimeout(() => {
+      document.getElementById("enquiry")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [hash]);
+
 
   const [form, setForm] = useState({
     name: "",
@@ -12,7 +31,7 @@ export default function EnquiryForm() {
     socialMediaHandle: "",
   });
 
-  const BUSINESS_WHATSAPP = "2348070951487";
+  const BUSINESS_WHATSAPP = "2348033302881";
   // Replace with the business owner's WhatsApp number
   // Use country code, no +, no spaces, no dashes
 
@@ -33,54 +52,104 @@ export default function EnquiryForm() {
 
 
   
-const handleSubmit = async (e) => {
+const handleSubmit = (e) => {
   e.preventDefault();
 
-  try {
-
-    await axios.post(
-      "http://localhost:5001/api/enquiry",
-      form
-    );
-
-    // WHATSAPP MESSAGE
-    const message = `
+  // WHATSAPP MESSAGE
+  const message = `
 New Website Enquiry
 
 Name: ${form.name}
 Email: ${form.email}
 Phone: ${form.phone}
-Social Media: ${form.socialMedia}
-Handle: ${form.handle}
+Social Media: ${form.socialMediaAccount}
+Handle: ${form.socialMediaHandle}
     `;
 
-    const whatsappUrl =
-      `https://wa.me/2348123456789?text=${encodeURIComponent(message)}`;
+  const whatsappUrl =
+    `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
-    window.open(whatsappUrl, "_blank");
+  // 1. Open WhatsApp immediately, while it still counts as a click
+  window.open(whatsappUrl, "_blank");
 
-    alert("Enquiry sent successfully!");
+  // 2. Send the email copy in the background.
+  //    If it fails, WhatsApp has already opened, so the visitor isn't affected.
+  axios
+    .post("/api/enquiry", {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      socialMedia: form.socialMediaAccount,
+      handle: form.socialMediaHandle,
+    })
+    .catch((error) => console.log("Enquiry email failed:", error));
 
-  } catch (error) {
-    console.log(error);
-    alert("Failed to send enquiry");
-  }
+  // 3. Clear the form
+  setForm({
+    name: "",
+    email: "",
+    phone: "",
+    socialMediaAccount: "",
+    socialMediaHandle: "",
+  });
 };
 
   return (
-    <section className="w-full bg-black px-6 py-16 text-white md:px-10">
+    <section
+  id="enquiry"
+  className="w-full scroll-mt-24 bg-black px-6 py-16 text-white md:px-10"
+>
       <div className="mx-auto max-w-5xl">
-        <div className="flex justify-center">
-          <button
-            type="button"
-            onClick={handleToggle}
-            className="rounded-full border border-white/15 bg-white/5 px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-white/10"
-          >
-            {isOpen ? "Close" : "Enquire"}
-          </button>
-        </div>
+
+<div className="flex flex-col gap-8 border-b border-white/10 pb-10 md:flex-row md:items-end md:justify-between">
+
+  {/* LEFT SIDE: WEBSITE COPY */}
+  <div className="max-w-2xl">
+    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-[#E8BC45]">
+      Let's Connect
+    </p>
+
+    <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl">
+      Have a project in mind?
+    </h2>
+
+    <p className="mt-5 max-w-xl text-base leading-relaxed text-white/55">
+      Whether you're planning a property development,
+      need construction expertise, or want to explore
+      an investment partnership, tell us what you're
+      working on.
+    </p>
+  </div>
+
+  {/* RIGHT SIDE: ENQUIRE BUTTON */}
+  <button
+    type="button"
+    onClick={handleToggle}
+    aria-expanded={isOpen}
+    aria-controls="enquiry-form"
+    className="
+      group inline-flex min-h-[52px]
+      w-full shrink-0 items-center justify-center
+      gap-6 rounded-full bg-[#E8BC45]
+      px-8 py-4 text-sm font-semibold text-black
+      transition-all duration-300
+      hover:-translate-y-1 hover:bg-[#F5D06B]
+      hover:shadow-[0_10px_30px_rgba(232,188,69,0.15)]
+      md:w-auto
+    "
+  >
+    {isOpen ? "Close Form" : "Enquire Now"}
+
+    <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
+      {isOpen ? "−" : "↗"}
+    </span>
+  </button>
+
+</div>
+
 
         <div
+        id="enquiry-form"
           className={`grid transition-all duration-500 ease-in-out ${
             isOpen ? "mt-8 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
           }`}

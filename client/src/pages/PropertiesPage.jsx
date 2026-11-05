@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API_BASE = "http://localhost:5001";
+const API_BASE = "";
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState([]);
@@ -22,7 +22,14 @@ export default function PropertiesPage() {
       {/* top filter style bar */}
       <div className="sticky top-0 z-40 border-b border-black/10 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center gap-3 overflow-x-auto">
-          {["Type", "Price", "Bedrooms", "Amenities", "Status", "More filters"].map((item) => (
+          {[
+            "Type",
+            "Price",
+            "Bedrooms",
+            "Amenities",
+            "Status",
+            "More filters",
+          ].map((item) => (
             <button
               key={item}
               className="shrink-0 rounded-full border border-black/15 px-4 py-2 text-sm text-black/80 hover:border-black/30 hover:bg-black/[0.03] transition"
@@ -74,7 +81,9 @@ export default function PropertiesPage() {
 
                   <div className="mt-4">
                     {property.propertyText ? (
-                      <p className="text-sm text-black/55">{property.propertyText}</p>
+                      <p className="text-sm text-black/55">
+                        {property.propertyText}
+                      </p>
                     ) : null}
 
                     <h2 className="mt-1 text-2xl font-semibold tracking-tight">
@@ -90,7 +99,9 @@ export default function PropertiesPage() {
                         {property.value || "Price on request"}
                       </span>
 
-                      <span className="text-sm text-black/50">View details</span>
+                      <span className="text-sm text-black/50">
+                        View details
+                      </span>
                     </div>
                   </div>
                 </Link>

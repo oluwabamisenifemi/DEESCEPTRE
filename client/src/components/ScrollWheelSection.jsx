@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const API_BASE = "http://localhost:5001";
-
+const API_BASE = "";
 
 export default function ScrollWheelSection() {
   const wrapperRef = useRef(null);
@@ -11,30 +10,42 @@ export default function ScrollWheelSection() {
   // 4 distinct steps (content changes each segment)
   const steps = useMemo(
     () => [
-      { num: "001", title: "Survey", desc: "We gather info and assess the site to define direction." },
-      { num: "002", title: "Design", desc: "We craft concepts, drawings, and realistic visualisations." },
-      { num: "003", title: "Build", desc: "We execute with quality control and clear timelines." },
-      { num: "004", title: "Deliver", desc: "Final handover with polishing, checks, and support." },
+      {
+        num: "001",
+        title: "Survey",
+        desc: "We gather info and assess the site to define direction.",
+      },
+      {
+        num: "002",
+        title: "Design",
+        desc: "We craft concepts, drawings, and realistic visualisations.",
+      },
+      {
+        num: "003",
+        title: "Build",
+        desc: "We execute with quality control and clear timelines.",
+      },
+      {
+        num: "004",
+        title: "Deliver",
+        desc: "Final handover with polishing, checks, and support.",
+      },
     ],
-    []
+    [],
   );
 
-
   useEffect(() => {
-  fetch("/api/site")
-    .then((r) => r.json())
-    .then((d) => {
-      const section = d?.site?.sectionImageUrl || "";
-      if (section) setSectionImage(`${API_BASE}${section}`);
-    })
-    .catch(() => {});
-}, []);
+    fetch("/api/site")
+      .then((r) => r.json())
+      .then((d) => {
+        const section = d?.site?.sectionImageUrl || "";
+        if (section) setSectionImage(`${API_BASE}${section}`);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const el = wrapperRef.current;
-    
-
-    
 
     if (!el) return;
 
@@ -58,9 +69,6 @@ export default function ScrollWheelSection() {
     const onScroll = () => {
       if (raf) return;
       raf = window.requestAnimationFrame(update);
-
-
-      
     };
 
     update();
@@ -82,9 +90,9 @@ export default function ScrollWheelSection() {
   // Arc geometry in SVG coordinates (matches 420x300 dome)
   const W = 420;
   const H = 300;
-  const cx = 210;     // center x
-  const cy = 240;     // arc baseline y
-  const r = 180;      // radius
+  const cx = 210; // center x
+  const cy = 240; // arc baseline y
+  const r = 180; // radius
 
   // Dot moves along semi-circle: theta 0 (right) → pi (left)
   const theta = segP * Math.PI;
@@ -96,38 +104,43 @@ export default function ScrollWheelSection() {
   const fadeOut = Math.min(1, Math.max(0, (1 - segP) / 0.08));
   const dotOpacity = Math.min(fadeIn, fadeOut);
   // Slide-over panel progress near the end of the scrollwheel section
-const slideStart = 0.82; // when the slide begins
-const slideEnd = 0.98;   // when it finishes
-const slideP = Math.min(1, Math.max(0, (progress - slideStart) / (slideEnd - slideStart))); // 0..1
-const slideY = (1 - slideP) * 100; // 100% (hidden below) -> 0% (fully covering)
+  const slideStart = 0.82; // when the slide begins
+  const slideEnd = 0.98; // when it finishes
+  const slideP = Math.min(
+    1,
+    Math.max(0, (progress - slideStart) / (slideEnd - slideStart)),
+  ); // 0..1
+  const slideY = (1 - slideP) * 100; // 100% (hidden below) -> 0% (fully covering)
 
   // Wheel rotation (gives “spinning” feel). One full spin across the whole pinned scroll.
-  
 
   return (
     // Make wrapper taller than 1 screen so scrolling “drives” animation
-    <section ref={wrapperRef} className="relative h-[500vh] w-full bg-[#0e0e0e]">
+    <section
+      ref={wrapperRef}
+      className="relative h-[500vh] w-full bg-[#0e0e0e]"
+    >
       {/* Sticky pinned viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden text-white">
         {/* Divider lines (your earlier ones) */}
         <div className="absolute left-[28%] top-0 bottom-[1.5cm] w-px bg-white/10" />
         <div className="absolute left-0 right-0 bottom-[1.5cm] h-px bg-white/10" />
 
-       {/* LEFT MENU (dynamic highlight based on seg) */}
-<div className="absolute left-16 top-1/2 -translate-y-1/2 flex flex-col gap-10">
-  {["Define", "Outsource", "Jigsaw", "Upgrade"].map((label, i) => (
-    <span
-      key={label}
-      className={
-        i === seg
-          ? "text-4xl font-semibold text-white font-[Montserrat]"
-          : "text-4xl font-light text-white/30 font-[Montserrat]"
-      }
-    >
-      {label}
-    </span>
-  ))}
-</div>
+        {/* LEFT MENU (dynamic highlight based on seg) */}
+        <div className="absolute left-16 top-1/2 -translate-y-1/2 flex flex-col gap-10">
+          {["Define", "Outsource", "Jigsaw", "Upgrade"].map((label, i) => (
+            <span
+              key={label}
+              className={
+                i === seg
+                  ? "text-4xl font-semibold text-white font-[Montserrat]"
+                  : "text-4xl font-light text-white/30 font-[Montserrat]"
+              }
+            >
+              {label}
+            </span>
+          ))}
+        </div>
 
         {/* CENTER CONTENT (changes with segment) */}
         <div className="absolute left-[32%] top-1/2 -translate-y-1/2 max-w-xl">
@@ -135,115 +148,114 @@ const slideY = (1 - slideP) * 100; // 100% (hidden below) -> 0% (fully covering)
             <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-sm">
               {step.title[0]}
             </div>
-            <h2 className="text-xl font-semibold font-[Montserrat]">{step.title}</h2>
+            <h2 className="text-xl font-semibold font-[Montserrat]">
+              {step.title}
+            </h2>
           </div>
-          <p className="text-white/60 leading-relaxed text-base font-[Montserrat]">{step.desc}</p>
+          <p className="text-white/60 leading-relaxed text-base font-[Montserrat]">
+            {step.desc}
+          </p>
         </div>
 
         {/* RIGHT WHEEL (small + off right) */}
         <div className="absolute right-[38px] top-1/2 -translate-y-1/2 w-[420px] h-[300px] pointer-events-none">
           {/* Spin wrapper */}
-         
-            <svg className="absolute inset-0" viewBox={`0 0 ${W} ${H}`} fill="none">
-              {/* Dome fill */}
-             {/* Dome fill (orange base, stops at arc) */}
-<path
-  d="M 20 240 A 180 180 0 0 1 400 240 A 180 180 0 0 0 20 240 Z"
-  fill="url(#domeFill)"
-/>
+
+          <svg
+            className="absolute inset-0"
+            viewBox={`0 0 ${W} ${H}`}
+            fill="none"
+          >
+            {/* Dome fill */}
+            {/* Dome fill (orange base, stops at arc) */}
+            <path
+              d="M 20 240 A 180 180 0 0 1 400 240 A 180 180 0 0 0 20 240 Z"
+              fill="url(#domeFill)"
+            />
             {/* Shading (depth, stops at arc) */}
-<path
-  d="M 20 240 A 180 180 0 0 1 400 240 A 180 180 0 0 0 20 240 Z"
-  fill="url(#domeShade)"
-  opacity="1"
-/>  
-              {/* Arc edge */}
-              <path
-                d="M 20 240 A 180 180 0 0 1 400 240"
-                stroke="rgba(255,255,255,0.55)"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
+            <path
+              d="M 20 240 A 180 180 0 0 1 400 240 A 180 180 0 0 0 20 240 Z"
+              fill="url(#domeShade)"
+              opacity="1"
+            />
+            {/* Arc edge */}
+            <path
+              d="M 20 240 A 180 180 0 0 1 400 240"
+              stroke="rgba(255,255,255,0.55)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <defs>
+              {/* Orange fading fill */}
+              <radialGradient
+                id="domeFill"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(210 240) rotate(-90) scale(220 280)"
+              >
+                <stop offset="0" stopColor="rgba(255, 177, 110, 0.28)" />
+                <stop offset="0.55" stopColor="rgba(170, 105, 60, 0.20)" />
+                <stop offset="1" stopColor="rgba(0, 0, 0, 0)" />
+              </radialGradient>
 
-<defs>
-  {/* Orange fading fill */}
-  <radialGradient
-    id="domeFill"
-    cx="0"
-    cy="0"
-    r="1"
-    gradientUnits="userSpaceOnUse"
-    gradientTransform="translate(210 240) rotate(-90) scale(220 280)"
-  >
-    <stop offset="0" stopColor="rgba(255, 177, 110, 0.28)" />
-    <stop offset="0.55" stopColor="rgba(170, 105, 60, 0.20)" />
-    <stop offset="1" stopColor="rgba(0, 0, 0, 0)" />
-  </radialGradient>
-
-  {/* Dark shading to add depth (still inside arc only) */}
-  <radialGradient
-    id="domeShade"
-    cx="0"
-    cy="0"
-    r="1"
-    gradientUnits="userSpaceOnUse"
-    gradientTransform="translate(210 255) rotate(-90) scale(210 300)"
-  >
-    <stop offset="0" stopColor="rgba(0,0,0,0.00)" />
-    <stop offset="0.55" stopColor="rgba(0,0,0,0.30)" />
-    <stop offset="1" stopColor="rgba(0,0,0,0.70)" />
-  </radialGradient>
-</defs>x1
-
-              {/* Moving dot along arc (content changes per segment) */}
-              <g opacity={dotOpacity}>
-
-                
-
-                
-                <circle cx={dotX} cy={dotY} r="34" fill="rgba(244,242,237,1)" />
-                <text
-                  x={dotX}
-                  y={dotY - 6}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="#b45309"
-                  style={{ letterSpacing: "2px", fontWeight: 700 }}
-                >
-                  {step.num}
-                </text>
-                <text
-                  x={dotX}
-                  y={dotY + 14}
-                  textAnchor="middle"
-                  fontSize="16"
-                  fill="#111"
-                  style={{ fontWeight: 700 }}
-                >
-                  {step.title}
-                </text>
-              </g>
-
-              
-            </svg>
-          </div>
-       
+              {/* Dark shading to add depth (still inside arc only) */}
+              <radialGradient
+                id="domeShade"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(210 255) rotate(-90) scale(210 300)"
+              >
+                <stop offset="0" stopColor="rgba(0,0,0,0.00)" />
+                <stop offset="0.55" stopColor="rgba(0,0,0,0.30)" />
+                <stop offset="1" stopColor="rgba(0,0,0,0.70)" />
+              </radialGradient>
+            </defs>
+            x1
+            {/* Moving dot along arc (content changes per segment) */}
+            <g opacity={dotOpacity}>
+              <circle cx={dotX} cy={dotY} r="34" fill="rgba(244,242,237,1)" />
+              <text
+                x={dotX}
+                y={dotY - 6}
+                textAnchor="middle"
+                fontSize="10"
+                fill="#b45309"
+                style={{ letterSpacing: "2px", fontWeight: 700 }}
+              >
+                {step.num}
+              </text>
+              <text
+                x={dotX}
+                y={dotY + 14}
+                textAnchor="middle"
+                fontSize="16"
+                fill="#111"
+                style={{ fontWeight: 700 }}
+              >
+                {step.title}
+              </text>
+            </g>
+          </svg>
+        </div>
 
         {/* Optional tiny progress debug (remove later) */}
         {/* <div className="absolute bottom-6 left-6 text-xs text-white/40">{(progress*100).toFixed(0)}%</div> */}
 
         {/* SLIDE-OVER PANEL (slides UP over the scrollwheel) */}
 
-
-
-
-
-<div
-  className="absolute inset-0 z-[999] overflow-hidden"
-  style={{ transform: `translateY(${slideY}%)`, willChange: "transform" }}
->
-  {/* local styles for the gold “texture” */}
-  <style>{`
+        <div
+          className="absolute inset-0 z-[999] overflow-hidden"
+          style={{
+            transform: `translateY(${slideY}%)`,
+            willChange: "transform",
+          }}
+        >
+          {/* local styles for the gold “texture” */}
+          <style>{`
     .goldTexture {
       color: transparent;
       -webkit-text-fill-color: transparent;
@@ -258,12 +270,7 @@ const slideY = (1 - slideP) * 100; // 100% (hidden below) -> 0% (fully covering)
       background-position: 0 0, 40px 20px, 0 0, 0 0;
     }
   `}</style>
-
-
-
-
-
-</div>
+        </div>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-const API_BASE = "http://localhost:5001";
+const API_BASE = "";
 
 export default function SecretAdmin() {
   const [token, setToken] = useState(localStorage.getItem("admin_token") || "");
@@ -520,7 +520,7 @@ export default function SecretAdmin() {
 
   function updateVariable(id, key, val) {
     setPropertyVariables((prev) =>
-      prev.map((v) => (v.id === id ? { ...v, [key]: val } : v))
+      prev.map((v) => (v.id === id ? { ...v, [key]: val } : v)),
     );
   }
 
@@ -528,7 +528,7 @@ export default function SecretAdmin() {
     setPropertyVariables((prev) =>
       prev.length === 1
         ? [{ id: crypto.randomUUID(), label: "", value: "" }]
-        : prev.filter((v) => v.id !== id)
+        : prev.filter((v) => v.id !== id),
     );
   }
 
@@ -613,7 +613,8 @@ export default function SecretAdmin() {
 
     if (!token) return setError("Please login first.");
     if (!propertyName.trim()) return setError("Property name is required.");
-    if (!propertyCoverUrl) return setError("Please upload a property cover image first.");
+    if (!propertyCoverUrl)
+      return setError("Please upload a property cover image first.");
 
     setCreatingProperty(true);
     setStatus("Creating property...");
@@ -665,7 +666,9 @@ export default function SecretAdmin() {
       setPropertyGalleryUrls([]);
       setAmenityInput("");
       setPropertyAmenities([]);
-      setPropertyVariables([{ id: crypto.randomUUID(), label: "Units", value: "" }]);
+      setPropertyVariables([
+        { id: crypto.randomUUID(), label: "Units", value: "" },
+      ]);
 
       await refreshProperties();
     } catch {
@@ -711,10 +714,13 @@ export default function SecretAdmin() {
       <div className="relative mx-auto w-full max-w-6xl px-6 py-10">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-widest text-white/50">Admin</p>
+            <p className="text-xs uppercase tracking-widest text-white/50">
+              Admin
+            </p>
             <h1 className="text-2xl font-semibold">Site Dashboard</h1>
             <p className="mt-1 text-white/60">
-              Upload and update site assets, featured works, and property listings.
+              Upload and update site assets, featured works, and property
+              listings.
             </p>
           </div>
 
@@ -733,7 +739,9 @@ export default function SecretAdmin() {
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             <div className={`${card} p-6`}>
               <h2 className="text-lg font-semibold">Login</h2>
-              <p className="mt-1 text-sm text-white/60">Enter your admin credentials to continue.</p>
+              <p className="mt-1 text-sm text-white/60">
+                Enter your admin credentials to continue.
+              </p>
 
               <form onSubmit={login} className="mt-6 space-y-4">
                 <div>
@@ -759,7 +767,10 @@ export default function SecretAdmin() {
                   />
                 </div>
 
-                <button disabled={loggingIn} className={`${buttonPrimary} w-full`}>
+                <button
+                  disabled={loggingIn}
+                  className={`${buttonPrimary} w-full`}
+                >
                   {loggingIn ? "Logging in..." : "Login"}
                 </button>
 
@@ -801,7 +812,8 @@ export default function SecretAdmin() {
                 <div>
                   <h2 className="text-lg font-semibold">Hero Image</h2>
                   <p className="mt-1 text-sm text-white/60">
-                    Upload a new image and it will replace the homepage hero background.
+                    Upload a new image and it will replace the homepage hero
+                    background.
                   </p>
                 </div>
                 <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-white/60">
@@ -814,7 +826,11 @@ export default function SecretAdmin() {
                   <p className="text-xs text-white/60">Current</p>
                   <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-black/30">
                     {currentUrl ? (
-                      <img src={currentUrl} alt="Current hero" className="h-44 w-full object-cover" />
+                      <img
+                        src={currentUrl}
+                        alt="Current hero"
+                        className="h-44 w-full object-cover"
+                      />
                     ) : (
                       <div className="h-44 w-full grid place-items-center text-sm text-white/50">
                         No image set
@@ -827,7 +843,11 @@ export default function SecretAdmin() {
                   <p className="text-xs text-white/60">New Upload</p>
                   <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-black/30">
                     {previewUrl ? (
-                      <img src={previewUrl} alt="Preview" className="h-44 w-full object-cover" />
+                      <img
+                        src={previewUrl}
+                        alt="Preview"
+                        className="h-44 w-full object-cover"
+                      />
                     ) : (
                       <div className="h-44 w-full grid place-items-center text-sm text-white/50">
                         Pick an image to preview
@@ -856,7 +876,8 @@ export default function SecretAdmin() {
                 <div>
                   <h2 className="text-lg font-semibold">Section Image</h2>
                   <p className="mt-1 text-sm text-white/60">
-                    Upload a new image and it will replace the second section image.
+                    Upload a new image and it will replace the second section
+                    image.
                   </p>
                 </div>
                 <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-white/60">
@@ -919,8 +940,8 @@ export default function SecretAdmin() {
                 <div>
                   <h2 className="text-lg font-semibold">Featured Works</h2>
                   <p className="mt-1 text-sm text-white/60">
-                    Upload works, mark as “Show on homepage”, and delete when needed.
-                    Homepage will display the latest 8 featured works.
+                    Upload works, mark as “Show on homepage”, and delete when
+                    needed. Homepage will display the latest 8 featured works.
                   </p>
                 </div>
                 <button onClick={refreshWorks} className={buttonGhost}>
@@ -979,7 +1000,9 @@ export default function SecretAdmin() {
                     </label>
 
                     <div className="mt-2">
-                      <p className="text-xs text-white/60 mb-2">Cover image (required)</p>
+                      <p className="text-xs text-white/60 mb-2">
+                        Cover image (required)
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -989,7 +1012,11 @@ export default function SecretAdmin() {
                       />
                       <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-black/30">
                         {coverPreview ? (
-                          <img src={coverPreview} alt="Cover preview" className="h-44 w-full object-cover" />
+                          <img
+                            src={coverPreview}
+                            alt="Cover preview"
+                            className="h-44 w-full object-cover"
+                          />
                         ) : coverUrl ? (
                           <div className="h-44 grid place-items-center text-xs text-white/60">
                             Cover uploaded ✅
@@ -1003,7 +1030,9 @@ export default function SecretAdmin() {
                     </div>
 
                     <div className="mt-4">
-                      <p className="text-xs text-white/60 mb-2">Gallery images (optional, multiple)</p>
+                      <p className="text-xs text-white/60 mb-2">
+                        Gallery images (optional, multiple)
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1046,7 +1075,8 @@ export default function SecretAdmin() {
                 <div className={`rounded-2xl ${subtleBorder} bg-black/25 p-5`}>
                   <h3 className="font-semibold">All works</h3>
                   <p className="mt-1 text-xs text-white/50">
-                    Click “Show on homepage” to include it in the homepage Featured Works grid (max 8).
+                    Click “Show on homepage” to include it in the homepage
+                    Featured Works grid (max 8).
                   </p>
 
                   <div className="mt-4 space-y-3 max-h-[520px] overflow-auto pr-1">
@@ -1056,7 +1086,9 @@ export default function SecretAdmin() {
                       <div className="text-sm text-white/50">No works yet.</div>
                     ) : (
                       works.map((w) => {
-                        const cover = w.coverImageUrl ? `${API_BASE}${w.coverImageUrl}` : "";
+                        const cover = w.coverImageUrl
+                          ? `${API_BASE}${w.coverImageUrl}`
+                          : "";
                         return (
                           <div
                             key={w.id}
@@ -1064,12 +1096,18 @@ export default function SecretAdmin() {
                           >
                             <div className="h-14 w-14 overflow-hidden rounded-lg border border-white/10 bg-black/30">
                               {cover ? (
-                                <img src={cover} alt={w.title} className="h-full w-full object-cover" />
+                                <img
+                                  src={cover}
+                                  alt={w.title}
+                                  className="h-full w-full object-cover"
+                                />
                               ) : null}
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <div className="font-semibold text-sm truncate">{w.title}</div>
+                              <div className="font-semibold text-sm truncate">
+                                {w.title}
+                              </div>
                               <div className="text-xs text-white/50 truncate">
                                 {w.category || "—"} • {w.location || "—"}
                               </div>
@@ -1105,7 +1143,8 @@ export default function SecretAdmin() {
                 <div>
                   <h2 className="text-lg font-semibold">Property Listings</h2>
                   <p className="mt-1 text-sm text-white/60">
-                    Create editable property listings with dynamic variables, amenities, cover image, and gallery.
+                    Create editable property listings with dynamic variables,
+                    amenities, cover image, and gallery.
                   </p>
                 </div>
                 <button onClick={refreshProperties} className={buttonGhost}>
@@ -1155,7 +1194,9 @@ export default function SecretAdmin() {
                     />
 
                     <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <p className="text-sm font-medium text-white/80">Amenities</p>
+                      <p className="text-sm font-medium text-white/80">
+                        Amenities
+                      </p>
 
                       <div className="mt-3 flex gap-2">
                         <input
@@ -1170,7 +1211,11 @@ export default function SecretAdmin() {
                             }
                           }}
                         />
-                        <button type="button" onClick={addAmenity} className={buttonGhost}>
+                        <button
+                          type="button"
+                          onClick={addAmenity}
+                          className={buttonGhost}
+                        >
                           Add
                         </button>
                       </div>
@@ -1194,26 +1239,39 @@ export default function SecretAdmin() {
 
                     <div className="rounded-xl border border-white/10 bg-black/20 p-4">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-white/80">Dynamic Variables</p>
-                        <button type="button" onClick={addVariable} className={buttonGhost}>
+                        <p className="text-sm font-medium text-white/80">
+                          Dynamic Variables
+                        </p>
+                        <button
+                          type="button"
+                          onClick={addVariable}
+                          className={buttonGhost}
+                        >
                           + Add Variable
                         </button>
                       </div>
 
                       <div className="mt-3 space-y-3">
                         {propertyVariables.map((v) => (
-                          <div key={v.id} className="grid grid-cols-[1fr_1fr_auto_auto] gap-2">
+                          <div
+                            key={v.id}
+                            className="grid grid-cols-[1fr_1fr_auto_auto] gap-2"
+                          >
                             <input
                               className={input}
                               placeholder="Variable name"
                               value={v.label}
-                              onChange={(e) => updateVariable(v.id, "label", e.target.value)}
+                              onChange={(e) =>
+                                updateVariable(v.id, "label", e.target.value)
+                              }
                             />
                             <input
                               className={input}
                               placeholder="Variable value"
                               value={v.value}
-                              onChange={(e) => updateVariable(v.id, "value", e.target.value)}
+                              onChange={(e) =>
+                                updateVariable(v.id, "value", e.target.value)
+                              }
                             />
                             <button
                               type="button"
@@ -1237,12 +1295,16 @@ export default function SecretAdmin() {
                     </div>
 
                     <div className="mt-2">
-                      <p className="text-xs text-white/60 mb-2">Property cover image (required)</p>
+                      <p className="text-xs text-white/60 mb-2">
+                        Property cover image (required)
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
                         disabled={uploading}
-                        onChange={(e) => onPickPropertyCover(e.target.files?.[0])}
+                        onChange={(e) =>
+                          onPickPropertyCover(e.target.files?.[0])
+                        }
                         className={fileInput}
                       />
                       <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-black/30">
@@ -1265,7 +1327,9 @@ export default function SecretAdmin() {
                     </div>
 
                     <div className="mt-4">
-                      <p className="text-xs text-white/60 mb-2">Property gallery images (optional, multiple)</p>
+                      <p className="text-xs text-white/60 mb-2">
+                        Property gallery images (optional, multiple)
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1288,7 +1352,8 @@ export default function SecretAdmin() {
                         </div>
                       ) : propertyGalleryUrls.length ? (
                         <div className="mt-3 text-xs text-white/60">
-                          Property gallery uploaded ✅ ({propertyGalleryUrls.length} images)
+                          Property gallery uploaded ✅ (
+                          {propertyGalleryUrls.length} images)
                         </div>
                       ) : null}
                     </div>
@@ -1315,10 +1380,14 @@ export default function SecretAdmin() {
                     {loadingProperties ? (
                       <div className="text-sm text-white/60">Loading…</div>
                     ) : properties.length === 0 ? (
-                      <div className="text-sm text-white/50">No properties yet.</div>
+                      <div className="text-sm text-white/50">
+                        No properties yet.
+                      </div>
                     ) : (
                       properties.map((p) => {
-                        const cover = p.coverImageUrl ? `${API_BASE}${p.coverImageUrl}` : "";
+                        const cover = p.coverImageUrl
+                          ? `${API_BASE}${p.coverImageUrl}`
+                          : "";
                         return (
                           <div
                             key={p.id}
@@ -1326,18 +1395,27 @@ export default function SecretAdmin() {
                           >
                             <div className="h-14 w-14 overflow-hidden rounded-lg border border-white/10 bg-black/30">
                               {cover ? (
-                                <img src={cover} alt={p.name} className="h-full w-full object-cover" />
+                                <img
+                                  src={cover}
+                                  alt={p.name}
+                                  className="h-full w-full object-cover"
+                                />
                               ) : null}
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <div className="font-semibold text-sm truncate">{p.name}</div>
+                              <div className="font-semibold text-sm truncate">
+                                {p.name}
+                              </div>
                               <div className="text-xs text-white/50 truncate">
                                 {p.location || "—"} • {p.value || "—"}
                               </div>
-                              {Array.isArray(p.variables) && p.variables.length ? (
+                              {Array.isArray(p.variables) &&
+                              p.variables.length ? (
                                 <div className="mt-1 text-[11px] text-white/40 truncate">
-                                  {p.variables.map((v) => `${v.label}: ${v.value}`).join(" • ")}
+                                  {p.variables
+                                    .map((v) => `${v.label}: ${v.value}`)
+                                    .join(" • ")}
                                 </div>
                               ) : null}
                             </div>

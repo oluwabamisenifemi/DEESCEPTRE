@@ -31,7 +31,7 @@ function CountUp({ end, duration = 1500, suffix = "", prefix = "" }) {
 
         requestAnimationFrame(tick);
       },
-      { threshold: 0.35 }
+      { threshold: 0.35 },
     );
 
     observer.observe(node);
@@ -75,8 +75,8 @@ export default function StatsShowcaseSection() {
             <p className="mt-10 max-w-[620px] text-[#3f4348] text-[20px] md:text-[22px] leading-[1.8] font-[Montserrat]">
               With each design, each concept and building, we tell a story.
               Albeit a new home, an apartment building, or a unique office
-              space, we tell a story about the client, and more essentially,
-              the community vibe.
+              space, we tell a story about the client, and more essentially, the
+              community vibe.
             </p>
 
             <Link
@@ -92,7 +92,7 @@ export default function StatsShowcaseSection() {
             <div className="absolute right-[-18px] top-[-18px] h-full w-full bg-[#0D73C9]" />
             <div className="relative bg-white p-0">
               <img
-                src="http://localhost:5001/uploads/1772441120142-8bca5cdb7a361.jpg"
+                src="/uploads/1772441120142-8bca5cdb7a361.jpg"
                 alt="Project showcase"
                 className="block h-[420px] md:h-[520px] w-full object-cover"
               />
@@ -100,76 +100,67 @@ export default function StatsShowcaseSection() {
           </div>
         </div>
 
+        <div className="mt-20 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+          <div className="group">
+            <div className="transition-transform duration-300 group-hover:-translate-y-2">
+              <div className="h-[90px] flex items-end">
+                <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
+                  <CountUp end={12675} duration={1500} />
+                  <span className="text-[34px] md:text-[40px] align-top">
+                    M²
+                  </span>
+                </div>
+              </div>
 
-<div className="mt-20 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-  <div className="group">
-    <div className="transition-transform duration-300 group-hover:-translate-y-2">
-      
-      <div className="h-[90px] flex items-end">
-        <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
-          <CountUp end={12675} duration={1500} />
-          <span className="text-[34px] md:text-[40px] align-top">M²</span>
+              <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
+                Lettable office space (7 floors) filler filler filler
+              </p>
+            </div>
+
+            <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
+              <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
+            </div>
+          </div>
+
+          <div className="group">
+            <div className="transition-transform duration-300 group-hover:-translate-y-2">
+              <div className="h-[90px] flex items-end">
+                <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
+                  <CountUp end={3605} duration={1500} />
+                  <span className="text-[34px] md:text-[40px] align-top">
+                    M²
+                  </span>
+                </div>
+              </div>
+
+              <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
+                Gross area of 3 palatial split level penthouses
+              </p>
+            </div>
+
+            <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
+              <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
+            </div>
+          </div>
+
+          <div className="group">
+            <div className="transition-transform duration-300 group-hover:-translate-y-2">
+              <div className="h-[90px] flex items-end">
+                <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
+                  <CountUp end={350} duration={1500} />
+                </div>
+              </div>
+
+              <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
+                Total parking spaces (6 levels) with drivers lounges
+              </p>
+            </div>
+
+            <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
+              <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
+            </div>
+          </div>
         </div>
-      </div>
-
-      <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
-        Lettable office space
-         (7 floors) filler filler filler
-      </p>
-    </div>
-
-    <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
-      <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
-    </div>
-  </div>
-
-
-
-
-  <div className="group">
-    <div className="transition-transform duration-300 group-hover:-translate-y-2">
-
-      <div className="h-[90px] flex items-end">
-        <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
-          <CountUp end={3605} duration={1500} />
-          <span className="text-[34px] md:text-[40px] align-top">M²</span>
-        </div>
-      </div>
-
-      <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
-        Gross area of 3 palatial split level penthouses
-      </p>
-    </div>
-
-    <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
-      <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
-    </div>
-  </div>
-
-
-
-  <div className="group">
-    <div className="transition-transform duration-300 group-hover:-translate-y-2">
-
-      <div className="h-[90px] flex items-end">
-        <div className="font-serif text-[56px] md:text-[66px] leading-none text-[#2f3338]">
-          <CountUp end={350} duration={1500} />
-        </div>
-      </div>
-
-      <p className="mt-5 text-[#3f4348] text-[18px] md:text-[20px] leading-[1.7] font-[Montserrat]">
-        Total parking spaces (6 levels) with drivers lounges
-      </p>
-    </div>
-
-    <div className="mt-8 h-[10px] w-full bg-[#ececec] overflow-hidden">
-      <div className="h-full w-0 bg-[#0D73C9] transition-all duration-500 group-hover:w-full" />
-    </div>
-  </div>
-</div>
-
-
-
       </div>
     </section>
   );

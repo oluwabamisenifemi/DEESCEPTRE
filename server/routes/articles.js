@@ -2,6 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const shrinkImage = require("../library/shrinkImage");
+const auth = require("../middleware/auth");
+
 
 const router = express.Router();
 
@@ -37,7 +40,11 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (req, file, cb) => cb(null, /^image\/(jpeg|png|webp)$/.test(file.mimetype)),
+});
 
 function readArticles() {
   try {
@@ -87,7 +94,7 @@ router.get("/:slug", (req, res) => {
   res.json(article);
 });
 
-router.post("/", upload.single("coverImage"), (req, res) => {
+router.post("/", auth, upload.single("coverImage"), async (req, res) => {
   const {
     title,
     excerpt,
@@ -128,7 +135,7 @@ router.post("/", upload.single("coverImage"), (req, res) => {
     mediumUrl,
     seoTitle: seoTitle || title,
     seoDescription: seoDescription || excerpt,
-    coverImage: req.file ? `/uploads/articles/${req.file.filename}` : "",
+    coverImage: req.file ? `/uploads/articles/${await shrinkImage(req.file.path)}` : "",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -139,7 +146,7 @@ router.post("/", upload.single("coverImage"), (req, res) => {
   res.status(201).json(article);
 });
 
-router.put("/:id", upload.single("coverImage"), (req, res) => {
+router.put("/:id", auth, upload.single("coverImage"), async (req, res) => {
   const articles = readArticles();
   const index = articles.findIndex((item) => item.id === req.params.id);
 
@@ -182,7 +189,7 @@ router.put("/:id", upload.single("coverImage"), (req, res) => {
   };
 
   if (req.file) {
-    updated.coverImage = `/uploads/articles/${req.file.filename}`;
+    updated.coverImage = `/uploads/articles/${await shrinkImage(req.file.path)}`;
   }
 
   articles[index] = updated;
@@ -191,7 +198,7 @@ router.put("/:id", upload.single("coverImage"), (req, res) => {
   res.json(updated);
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", auth, (req, res) => {
   const articles = readArticles();
   const filtered = articles.filter((item) => item.id !== req.params.id);
 
