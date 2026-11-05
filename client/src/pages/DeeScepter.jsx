@@ -36,13 +36,6 @@ const completedProjects = [
   { name: "Nexus Apartments", meta: "In development" },
 ];
 
-const partners = [
-  "Landowners",
-  "Private investors",
-  "Financial institutions",
-  "Off-plan buyers",
-];
-
 function SectionHeading({ eyebrow, title, body }) {
   return (
     <motion.div
@@ -105,9 +98,15 @@ export default function DeeScepter() {
             aria-label="Toggle navigation"
           >
             <span className="flex h-5 w-5 flex-col justify-between">
-              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "translate-y-[5px] rotate-45" : ""}`} />
-              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "-translate-y-[5px] -rotate-45" : ""}`} />
+              <span
+                className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "translate-y-[5px] rotate-45" : ""}`}
+              />
+              <span
+                className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block h-[2px] w-full rounded-full bg-white transition ${menuOpen ? "-translate-y-[5px] -rotate-45" : ""}`}
+              />
             </span>
           </button>
 
@@ -121,13 +120,13 @@ export default function DeeScepter() {
             <a href="#projects" className="transition hover:text-white">
               Projects
             </a>
-            <a href="#partners" className="transition hover:text-white">
+            <a href="/investors" className="transition hover:text-white">
               Partnerships
             </a>
           </nav>
 
           <a
-            href="#partners"
+            href="/contact"
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
           >
             Contact
@@ -139,16 +138,28 @@ export default function DeeScepter() {
           <div className="md:hidden border-t border-white/10 bg-black/80">
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
               <nav className="flex flex-col gap-3 text-sm text-zinc-300">
-                <a href="#overview" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                <a
+                  href="#overview"
+                  className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white"
+                >
                   Overview
                 </a>
-                <a href="#competencies" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                <a
+                  href="#competencies"
+                  className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white"
+                >
                   Competencies
                 </a>
-                <a href="#projects" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                <a
+                  href="#projects"
+                  className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white"
+                >
                   Projects
                 </a>
-                <a href="#partners" className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white">
+                <a
+                  href="/investors"
+                  className="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-white"
+                >
                   Partnerships
                 </a>
               </nav>
@@ -211,7 +222,10 @@ export default function DeeScepter() {
               <div className="grid gap-4 sm:grid-cols-2">
                 {[
                   { value: "08+", label: "Core delivery capabilities" },
-                  { value: "04", label: "Active & completed signature projects" },
+                  {
+                    value: "04",
+                    label: "Active & completed signature projects",
+                  },
                   { value: "100%", label: "Engineering-led oversight model" },
                   { value: "24/7", label: "Structured project visibility" },
                 ].map((item) => (
@@ -242,7 +256,10 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="overview" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
+        <section
+          id="overview"
+          className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8"
+        >
           <SectionHeading
             eyebrow="Company Overview"
             title="Structured residential development anchored by engineering discipline"
@@ -290,8 +307,8 @@ export default function DeeScepter() {
 
               <p className="mt-8 text-base leading-7 text-zinc-400">
                 Our integrated structure enables predictable cost control,
-                delivery transparency, structured payment models, and
-                risk-aware construction management.
+                delivery transparency, structured payment models, and risk-aware
+                construction management.
               </p>
 
               <div className="mt-8 grid gap-3">
@@ -335,9 +352,7 @@ export default function DeeScepter() {
                   className="group rounded-[28px] border border-white/10 bg-black/30 p-6 backdrop-blur-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-500">
-                      0{index + 1}
-                    </span>
+                    <span className="text-sm text-zinc-500">0{index + 1}</span>
                     <ArrowUpRight className="h-4 w-4 text-zinc-500 transition group-hover:text-white" />
                   </div>
                   <p className="mt-10 text-lg font-medium leading-7 text-white">
@@ -349,7 +364,10 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="projects" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
+        <section
+          id="projects"
+          className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8"
+        >
           <SectionHeading
             eyebrow="Track Record"
             title="Residential projects delivered through structured execution"
@@ -423,66 +441,7 @@ export default function DeeScepter() {
           </div>
         </section>
 
-        <section id="partners" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8">
-          <SectionHeading
-            eyebrow="Partnership Model"
-            title="Built for landowners, investors, and strategic development stakeholders"
-            body="We partner with investors, landowners, and strategic stakeholders seeking disciplined development backed by technical expertise."
-          />
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-            <Card className="h-full">
-              <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">
-                Collaboration Base
-              </p>
-              <div className="mt-8 space-y-4">
-                {partners.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center justify-between rounded-[22px] border border-white/10 bg-white/[0.03] px-5 py-4"
-                  >
-                    <span className="text-base text-white">{item}</span>
-                    <CheckCircle2 className="h-5 w-5 text-emerald-300/80" />
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            <Card className="h-full">
-              <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">
-                Agreement Structure
-              </p>
-              <h3 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Structured development agreements with disciplined execution
-                frameworks.
-              </h3>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-400">
-                Our partnership model aligns commercial intent with technical
-                control, helping stakeholders move from site opportunity to
-                build-ready delivery with stronger visibility and more reliable
-                execution outcomes.
-              </p>
-
-              <div className="mt-10 grid gap-4 sm:grid-cols-2">
-                {[
-                  "Feasibility-led entry",
-                  "Transparent project structuring",
-                  "Disciplined budget oversight",
-                  "Execution accountability",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-[22px] border border-white/10 bg-black/35 px-4 py-4 text-sm text-zinc-300"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-        </section>
-
-<LatestNewsSection />
+        <LatestNewsSection />
       </main>
 
       <footer className="border-t border-white/10 bg-black/80">

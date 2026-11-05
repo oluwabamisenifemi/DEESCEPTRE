@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-const API_BASE = "http://localhost:5001";
+const API_BASE = "";
 
 export default function WorkDetail() {
   const { id } = useParams();
@@ -19,13 +19,20 @@ export default function WorkDetail() {
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-6xl px-6 py-10">
-        <a href="/#featured-works" className="text-sm text-black/60 hover:text-black">
-  ← Back
-</a>
+        <a
+          href="/#featured-works"
+          className="text-sm text-black/60 hover:text-black"
+        >
+          ← Back
+        </a>
 
         <div className="mt-6 overflow-hidden rounded-2xl bg-black/5">
           {cover ? (
-            <img src={cover} alt={work?.title || "Work"} className="w-full h-[520px] object-cover" />
+            <img
+              src={cover}
+              alt={work?.title || "Work"}
+              className="w-full h-[520px] object-cover"
+            />
           ) : (
             <div className="w-full h-[520px] grid place-items-center text-black/50">
               No image

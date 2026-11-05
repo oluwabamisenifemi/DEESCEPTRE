@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const API_BASE = "http://localhost:5001";
+const API_BASE = "";
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
@@ -22,7 +22,10 @@ export default function PropertyDetailPage() {
     return (
       <div className="min-h-screen bg-white text-black">
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <Link to="/properties" className="text-sm text-black/60 hover:text-black">
+          <Link
+            to="/properties"
+            className="text-sm text-black/60 hover:text-black"
+          >
             ← Back to listings
           </Link>
           <div className="mt-10 text-black/50">Loading property...</div>
@@ -31,7 +34,9 @@ export default function PropertyDetailPage() {
     );
   }
 
-  const cover = property.coverImageUrl ? `${API_BASE}${property.coverImageUrl}` : "";
+  const cover = property.coverImageUrl
+    ? `${API_BASE}${property.coverImageUrl}`
+    : "";
   const gallery = Array.isArray(property.gallery) ? property.gallery : [];
   const amenities = Array.isArray(property.amenities) ? property.amenities : [];
   const variables = Array.isArray(property.variables) ? property.variables : [];
@@ -39,7 +44,10 @@ export default function PropertyDetailPage() {
   return (
     <div className="min-h-screen bg-white text-black">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <Link to="/properties" className="text-sm text-black/60 hover:text-black">
+        <Link
+          to="/properties"
+          className="text-sm text-black/60 hover:text-black"
+        >
           ← Back to listings
         </Link>
 
@@ -63,7 +71,10 @@ export default function PropertyDetailPage() {
             {gallery.length > 0 ? (
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {gallery.map((img, i) => (
-                  <div key={`${img}-${i}`} className="overflow-hidden rounded-3xl bg-black/[0.04]">
+                  <div
+                    key={`${img}-${i}`}
+                    className="overflow-hidden rounded-3xl bg-black/[0.04]"
+                  >
                     <img
                       src={`${API_BASE}${img}`}
                       alt={`Gallery ${i + 1}`}
@@ -85,7 +96,9 @@ export default function PropertyDetailPage() {
               {property.name}
             </h1>
 
-            <p className="mt-3 text-lg text-black/65">{property.location || "No location"}</p>
+            <p className="mt-3 text-lg text-black/65">
+              {property.location || "No location"}
+            </p>
 
             <div className="mt-6 text-2xl font-semibold">
               {property.value || "Price on request"}

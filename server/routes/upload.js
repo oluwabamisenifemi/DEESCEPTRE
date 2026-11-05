@@ -3,8 +3,10 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 
+
 // IMPORTANT: auth must export a function (req,res,next)
 const auth = require("../middleware/auth");
+const shrinkImage = require("../library/shrinkImage");
 
 const router = express.Router();
 
@@ -25,10 +27,14 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
-router.post("/", auth, upload.single("image"), (req, res) => {
+router.post("/", auth, upload.single("image"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-    return res.json({ url: `/uploads/${req.file.filename}` });
+
+    // Shrink and convert to .webp (keeps the original if that fails)
+    const fileName = await shrinkImage(req.file.path);
+
+    return res.json({ url: `/uploads/${fileName}` });
   } catch (err) {
     console.error("UPLOAD ERROR:", err);
     return res.status(500).json({ error: "Upload failed on server" });

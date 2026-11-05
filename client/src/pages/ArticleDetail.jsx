@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function ArticleDetail() {
   const { slug } = useParams();
@@ -7,7 +9,7 @@ export default function ArticleDetail() {
   const [moreArticles, setMoreArticles] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5001/api/articles/${slug}`)
+    fetch(`/api/articles/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setArticle(data);
@@ -30,7 +32,7 @@ export default function ArticleDetail() {
   }, [slug]);
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/articles/published")
+    fetch("/api/articles/published")
       .then((res) => res.json())
       .then((data) => {
         const filtered = data.filter((item) => item.slug !== slug).slice(0, 3);
@@ -41,15 +43,17 @@ export default function ArticleDetail() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-black px-6 py-20 text-white">
-        Loading article...
+            <div className="min-h-screen bg-black text-white">
+        <Navbar />
+        <p className="px-6 pt-36 text-white/50 md:px-10 md:pt-44">Loading article...</p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-4xl px-6 py-20 md:px-10">
+      <Navbar />
+      <div className="mx-auto max-w-4xl px-6 pb-20 pt-36 md:px-10 md:pt-44">
         <Link
           to="/articles"
           className="inline-block text-sm text-white/55 transition hover:text-white"
@@ -85,7 +89,7 @@ export default function ArticleDetail() {
         <div className="mt-10 overflow-hidden rounded-[32px] border border-white/10 bg-[#111]">
           {article.coverImage ? (
             <img
-              src={`http://localhost:5001${article.coverImage}`}
+              src={`${article.coverImage}`}
               alt={article.title}
               className="h-full w-full object-cover"
             />
@@ -137,6 +141,7 @@ export default function ArticleDetail() {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

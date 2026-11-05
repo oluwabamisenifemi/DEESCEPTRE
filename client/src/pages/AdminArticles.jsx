@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const initialForm = {
   title: "",
@@ -17,9 +18,10 @@ export default function AdminArticles() {
   const [form, setForm] = useState(initialForm);
   const [articles, setArticles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [token] = useState(() => localStorage.getItem("admin_token") || "");
 
   const loadArticles = () => {
-    fetch("http://localhost:5001/api/articles")
+    fetch("/api/articles")
       .then((res) => res.json())
       .then((data) => setArticles(data))
       .catch((err) => console.log(err));
@@ -66,8 +68,9 @@ export default function AdminArticles() {
         formData.append("coverImage", form.coverImage);
       }
 
-      const response = await fetch("http://localhost:5001/api/articles", {
+      const response = await fetch("/api/articles", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -91,8 +94,9 @@ export default function AdminArticles() {
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:5001/api/articles/${id}`, {
+      const response = await fetch(`/api/articles/${id}`, {
         method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
@@ -106,6 +110,19 @@ export default function AdminArticles() {
     }
   };
 
+    if (!token) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black px-6 text-white">
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold">Please log in first</h1>
+          <p className="mt-3 text-white/60">You need to be logged in as admin to manage articles.</p>
+          <Link to="/secret-admin" className="mt-6 inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold text-black">
+            Go to admin login
+          </Link>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-black px-6 py-20 text-white md:px-10">
       <div className="mx-auto max-w-7xl">

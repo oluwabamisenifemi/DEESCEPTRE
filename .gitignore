@@ -1,1 +1,13 @@
 node_modules/
+# Secrets — never commit
+.env
+server/.env
+
+# Leads collected from the website (personal data)
+server/data/subscribers.json
+server/data/meetings.json
+
+# Build output
+client/dist/
+.DS_Store
+server/data/dseii-interest.json

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API_BASE = "http://localhost:5001";
+const API_BASE = "";
 
 export default function FeaturedWorksSection() {
   const [works, setWorks] = useState([]);
@@ -14,7 +14,7 @@ export default function FeaturedWorksSection() {
   }, []);
 
   return (
-    <section id="featured-works" className="w-full bg-white">
+    <section id="featured-works" className="w-full scroll-mt-24 bg-white">
       <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
           <div className="md:col-span-2 flex items-center gap-3 text-sm text-black/70">
@@ -33,7 +33,8 @@ export default function FeaturedWorksSection() {
           <div className="md:col-span-4 flex md:justify-end">
             <div className="max-w-sm">
               <p className="font-[Montserrat] text-sm md:text-base text-black/70 leading-relaxed">
-                We craft thoughtful, contemporary architecture built on precision & clarity
+                We craft thoughtful, contemporary architecture built on
+                precision & clarity
               </p>
 
               <Link
@@ -43,7 +44,9 @@ export default function FeaturedWorksSection() {
                 <span className="grid place-items-center h-10 w-10 rounded-lg bg-red-500 text-white">
                   →
                 </span>
-                <span className="font-[Montserrat] font-medium text-black">All works</span>
+                <span className="font-[Montserrat] font-medium text-black">
+                  All works
+                </span>
               </Link>
             </div>
           </div>
